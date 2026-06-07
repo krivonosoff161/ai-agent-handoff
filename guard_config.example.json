@@ -1,0 +1,14 @@
+{
+  "deny_paths": ["*id_rsa", "*.pem", "*/.ssh/*"],
+  "deny_command_patterns": [
+    "rm\\s+-rf\\s+/(?!\\w)",
+    "git\\s+push\\b.*--force\\b",
+    "curl\\b[^|]*\\|\\s*(sh|bash)\\b"
+  ],
+  "confirm_paths": ["*.env", "*/.env", "*/secrets/*", "*credential*", "*/config/prod*"],
+  "confirm_command_patterns": [
+    "AUTO[_-]?DEPLOY\\s*[:=]\\s*true",
+    "\\bDROP\\s+TABLE\\b",
+    "\\bsudo\\b"
+  ]
+}

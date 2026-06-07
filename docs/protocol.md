@@ -1,0 +1,38 @@
+# The handoff protocol
+
+## The problem
+Multi-agent setups usually pass context by **copying chat** between agents. That is
+lossy (summaries drop detail), expensive (re-sending history burns tokens), and
+drift-prone (agents fall out of sync).
+
+## The idea: files are the contract
+Use the filesystem as shared memory. Three files do the work:
+
+| File | Direction | Purpose |
+|---|---|---|
+| `TASK.md` | A → B | self-contained brief (ODAF). The *only* thing B needs to start. |
+| `SESSION.md` | shared | live state + B's return block. Source of truth both read. |
+| `AGENTS.md` | shared | rules + roles + the loop. Read once per session. |
+
+## The loop
+```
+   A writes TASK.md  ──►  B reads TASK.md (no chat replay)
+                                  │
+                                  ▼
+                            B works in a branch
+                                  │
+   A reads SESSION.md   ◄──  B appends "↪ Return" to SESSION.md + commits
+   + git log / git diff
+```
+
+## Why it's cheap
+B never re-reads the conversation — it reads one brief. A never re-reads B's work
+turn-by-turn — it reads one return block + `git diff`. Token cost is **O(brief)**, not
+**O(history)**. It also scales past two agents: anyone who reads the three files is in sync,
+and it survives an agent's context reset (the files persist).
+
+## Safety
+The `NEVER` list in `AGENTS.md` is enforced mechanically by a PreToolUse guard
+(`agent_guard`, wired as `python -m agent_guard`): edits to secrets/prod or dangerous
+commands are blocked or require explicit human confirmation, so autonomy never reaches
+the money/prod surface.

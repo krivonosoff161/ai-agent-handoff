@@ -1,0 +1,100 @@
+# ai-agent-handoff
+
+[![Tests](https://github.com/krivonosoff161/ai-agent-handoff/actions/workflows/tests.yml/badge.svg)](https://github.com/krivonosoff161/ai-agent-handoff/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+
+**A file-based protocol for handing off work between AI coding agents — plus a PreToolUse safety guard that keeps autonomy off the secret/prod surface.**
+
+Multi-agent setups usually pass context by **copying chat** between agents: lossy, token-expensive, drift-prone. This is the opposite — agents coordinate through three small files and a `git`-based sync, so a handoff costs **one brief, not the whole history**.
+
+> Distilled from a real Claude + Codex workflow on a long-running project. Templates + an installable, dependency-free guard hook + a worked example. No framework, no lock-in.
+
+---
+
+## The loop
+
+```
+   Agent A writes TASK.md  ──►  Agent B reads TASK.md (no chat replay)
+                                       │
+                                       ▼
+                                 B works in a branch
+                                       │
+   A reads SESSION.md   ◄──  B appends "↪ Return" to SESSION.md + commits
+   + git log / git diff
+```
+
+1. **A → B:** A writes a self-contained `TASK.md` (ODAF: Outcome · Data · Action · Format).
+2. **B executes:** reads the brief — no dialog replay — works in a branch.
+3. **B → A:** appends a `↪ Return` block to `SESSION.md` and commits.
+4. **A syncs:** reads `SESSION.md` + `git diff`. In sync, zero human relay.
+
+Token cost is **O(brief)**, not **O(history)** — and it survives context resets, because the files persist. See [docs/protocol.md](docs/protocol.md).
+
+---
+
+## What's inside
+
+- **[templates/](templates/)** — `TASK.md` (ODAF brief) · `SESSION.md` (live state + return channel) · `AGENTS.md` (rules + roles) · `ODAF.md` (task framing).
+- **[src/agent_guard/](src/agent_guard/)** — an installable PreToolUse safety guard (deny / ask / allow) for secrets, prod, and dangerous commands. Zero dependencies, tested.
+- **[examples/](examples/)** — a filled-in `TASK.md` → `SESSION.md` return for a real task.
+- **[docs/protocol.md](docs/protocol.md)** — the loop, the diagram, and why it's cheap.
+
+---
+
+## Quickstart (the protocol)
+
+```bash
+git clone https://github.com/krivonosoff161/ai-agent-handoff
+cd ai-agent-handoff
+cp templates/AGENTS.md AGENTS.md       # your rules + roles (read once per session)
+cp templates/SESSION.md SESSION.md     # your live state
+# for each handoff: write a TASK.md from templates/TASK.md
+```
+
+Tell agent A: *"write the next task into `TASK.md`"*; tell agent B: *"do `TASK.md`"*. No copy-paste between them.
+
+---
+
+## The safety guard
+
+```bash
+pip install -e .          # provides the `agent-guard` command + the agent_guard package
+python -m pytest -q       # 11 offline tests, no network
+```
+
+```python
+from agent_guard import decide
+
+decide({"file_path": "/proj/.env"})                   # -> ("ask",  "edit to sensitive path ...")
+decide({"command": "git push origin main --force"})   # -> ("deny", "forbidden pattern ...")
+decide({"file_path": "src/app.py"})                   # -> ("allow", "")
+```
+
+Wire it as a [Claude Code PreToolUse hook](https://docs.claude.com/en/docs/claude-code/hooks) in `.claude/settings.json`:
+
+```json
+{ "hooks": { "PreToolUse": [
+  { "matcher": "Edit|Write|Bash",
+    "hooks": [ { "type": "command", "command": "python -m agent_guard" } ] } ] } }
+```
+
+`allow` = no output (the guard stays out of the way); exit code is always 0. Configure by copying
+`guard_config.example.json` → `guard_config.json` in your project root
+(`deny_paths` / `confirm_paths` / `deny_command_patterns` / `confirm_command_patterns`).
+Defaults protect SSH keys, `.pem`, `.env`, `secrets/`, force-push, `rm -rf /`, `curl | sh`, `sudo`.
+
+---
+
+## Why files beat chat
+
+- **Cheap:** B reads one brief, not the whole conversation; A reads one return + `git diff`.
+- **Robust:** survives an agent's context reset — the contract is on disk.
+- **Scales:** any number of agents stay in sync by reading the same three files.
+- **Auditable:** everything is `git`-versioned; the guard hook is the safety net.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
