@@ -96,6 +96,14 @@ Defaults protect SSH keys, `.pem`, `.env`, `secrets/`, force-push, `rm -rf /`, `
 
 ---
 
+## Docs
+
+- [Project map](docs/project-map.md) — what's where, guard internals, reviewer checklist.
+- [Use cases](docs/use-cases.md) — workflows, what this is *not* (incl. "not a sandbox"), residual risk.
+- [Protocol](docs/protocol.md) — why files beat chat, the loop.
+
+---
+
 ## Why files beat chat
 
 - **Cheap:** B reads one brief, not the whole conversation; A reads one return + `git diff`.
