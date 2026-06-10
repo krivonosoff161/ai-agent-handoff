@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "krivonosoff161" }]
-keywords = ["ai", "agents", "claude", "codex", "hooks", "safety", "handoff", "vibecoding"]
+keywords = ["ai", "agents", "claude", "codex", "hooks", "safety", "handoff", "guardrails", "developer-tools"]
 dependencies = []
 
 [project.optional-dependencies]

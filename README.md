@@ -60,7 +60,7 @@ Tell agent A: *"write the next task into `TASK.md`"*; tell agent B: *"do `TASK.m
 
 ```bash
 pip install -e .          # provides the `agent-guard` command + the agent_guard package
-python -m pytest -q       # 11 offline tests, no network
+python -m pytest -q       # 20 offline tests, no network
 ```
 
 ```python
@@ -69,6 +69,16 @@ from agent_guard import decide
 decide({"file_path": "/proj/.env"})                   # -> ("ask",  "edit to sensitive path ...")
 decide({"command": "git push origin main --force"})   # -> ("deny", "forbidden pattern ...")
 decide({"file_path": "src/app.py"})                   # -> ("allow", "")
+```
+
+Try it from the shell before wiring the hook — the guard answers in Claude Code hook format:
+
+```bash
+echo '{"tool_input": {"file_path": ".env"}}' | python -m agent_guard
+# {"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "ask", ...}}
+
+echo '{"tool_input": {"command": "pytest -q"}}' | python -m agent_guard
+# (no output — allow means the guard stays out of the way)
 ```
 
 Wire it as a [Claude Code PreToolUse hook](https://docs.claude.com/en/docs/claude-code/hooks) in `.claude/settings.json`:
