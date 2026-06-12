@@ -24,4 +24,4 @@
 - Edit secrets / `.env` / credentials.
 - Enable "go live" / auto-deploy flags.
 
-> The `NEVER` list is enforced mechanically by a PreToolUse guard — see `agent_guard` (`python -m agent_guard`).
+> The `NEVER` list is backed mechanically by a PreToolUse guard (pattern-based, not a sandbox) — see `agent_guard` (`python -m agent_guard`).

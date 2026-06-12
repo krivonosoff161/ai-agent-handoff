@@ -56,6 +56,10 @@ defaults stay as the baseline underneath.
 
 - Pattern matching is syntactic: `.env` is caught, `cat .en?` may not be.
   Treat the config as a living list, not a complete one.
+- Config mistakes are surfaced, not fatal: a malformed `guard_config.json`,
+  a wrong-typed key, an invalid regex or a typo'd key name each produce an
+  `agent-guard:` warning on stderr while the guard keeps running on the
+  remaining/default rules. Watch stderr after editing the config.
 - The guard sees one tool call at a time — it cannot reason about a *sequence*
   of individually-harmless calls.
 - `ask` relies on the host (e.g. Claude Code) actually presenting the

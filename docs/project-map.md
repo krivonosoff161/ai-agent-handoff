@@ -8,10 +8,10 @@ Two independent pieces that work together:
    `AGENTS.md`) that let coding agents (or an agent and a human) pass work to
    each other through the filesystem + git instead of copied chat. Pure
    convention: there is no code behind it, and that is the point.
-2. **`agent_guard`** — an installable PreToolUse hook (~90 lines, zero
+2. **`agent_guard`** — an installable PreToolUse hook (one small module, zero
    dependencies) that answers `deny` / `ask` / `allow` for a proposed tool
-   call, keeping agent autonomy away from secrets, prod files and dangerous
-   commands.
+   call, putting a gate between agent autonomy and secrets, prod files and
+   dangerous commands.
 
 Either piece is usable without the other.
 
@@ -35,14 +35,19 @@ guard (code):         tool-call JSON on stdin ─► decide(tool_input, config)
 | `examples/TASK.example.md` → `SESSION.example.md` | one filled-in handoff, end to end |
 | `src/agent_guard/guard.py` | all guard logic: `DEFAULT_CONFIG`, `load_config()`, pure `decide()`, `main()` stdin/stdout entry |
 | `guard_config.example.json` | starting point for per-project rules |
-| `tests/test_guard.py` | 20 offline tests: every decision branch, config I/O, real-subprocess CLI behavior |
+| `tests/test_guard.py` | offline tests: every decision branch, config validation/fallbacks, real-subprocess CLI behavior |
+| `tests/test_protocol_files.py` | pins the protocol contract: templates and the example keep their documented sections |
 
 ## What exists today
 
 - The four templates + a worked example of the loop.
 - The guard: path globs (`deny_paths` / `confirm_paths`) and command regexes
-  (`deny_command_patterns` / `confirm_command_patterns`), merged over sane
-  defaults from a local `guard_config.json`.
+  (`deny_command_patterns` / `confirm_command_patterns`), loaded from a local
+  `guard_config.json` with per-key REPLACE over the built-in defaults.
+- Config validation that fails safe and loud: malformed JSON → defaults,
+  wrong-typed key → default for that key, invalid regex → dropped, unknown
+  key (typo) → ignored; each case prints an `agent-guard:` warning to stderr.
+  stdout is reserved for hook JSON.
 - Claude Code PreToolUse output format; always exits 0; silent on `allow` and
   on malformed input (it never blocks the host tool by crashing).
 
@@ -64,7 +69,7 @@ guard (code):         tool-call JSON on stdin ─► decide(tool_input, config)
 ## How to run checks
 
 ```bash
-python -m pytest -q          # 20 offline tests (incl. real subprocess CLI runs)
+python -m pytest -q          # offline tests (incl. real subprocess CLI runs)
 python -m ruff check .
 echo '{"tool_input": {"file_path": ".env"}}' | python -m agent_guard   # -> "ask" JSON
 ```
@@ -77,7 +82,8 @@ CI runs pytest and ruff on Python 3.9 / 3.11 / 3.12.
   no code change. Only extend `DEFAULT_CONFIG` for things that are dangerous in
   ~every project.
 - New decision logic: keep `decide()` pure (no I/O) — that purity is what makes
-  the 11 branch tests trivial. I/O stays in `load_config()` / `main()`.
+  the branch tests trivial. I/O and config sanitizing stay in `load_config()` /
+  `main()`; `decide()` assumes a sanitized config.
 - Output formats for other hosts (non-Claude-Code): add a flag/env in `main()`
   only; do not leak host specifics into `decide()`.
 - Template changes: keep `TASK.md` self-contained (ODAF + Done-when +
@@ -88,7 +94,8 @@ CI runs pytest and ruff on Python 3.9 / 3.11 / 3.12.
 - [ ] `decide()` still pure and returns `(decision, reason)` with
       `decision ∈ {deny, ask, allow}`.
 - [ ] Guard still exits 0 in every path (a crashing guard = a blocked agent).
-- [ ] Malformed config still falls back to defaults; malformed stdin still silently allows.
+- [ ] Malformed config still falls back to defaults *with a stderr warning*;
+      malformed stdin still silently allows; stdout carries hook JSON only.
 - [ ] Zero runtime dependencies preserved.
 - [ ] New patterns covered by both a positive and a negative test
       (see `test_rm_rf_subdir_is_allowed` for the style).

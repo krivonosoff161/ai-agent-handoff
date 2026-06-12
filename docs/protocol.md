@@ -32,7 +32,8 @@ turn-by-turn — it reads one return block + `git diff`. Token cost is **O(brief
 and it survives an agent's context reset (the files persist).
 
 ## Safety
-The `NEVER` list in `AGENTS.md` is enforced mechanically by a PreToolUse guard
+The `NEVER` list in `AGENTS.md` is backed mechanically by a PreToolUse guard
 (`agent_guard`, wired as `python -m agent_guard`): edits to secrets/prod or dangerous
-commands are blocked or require explicit human confirmation, so autonomy never reaches
-the money/prod surface.
+commands that match its patterns are blocked or require explicit human confirmation.
+That covers the *known-shaped* dangerous surface, not everything — the guard is
+pattern matching, not a sandbox (see [use-cases](use-cases.md) for the limits).

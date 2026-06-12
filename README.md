@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 
-**A file-based protocol for handing off work between AI coding agents — plus a PreToolUse safety guard that keeps autonomy off the secret/prod surface.**
+**A file-based protocol for handing off work between AI coding agents — plus a PreToolUse safety guard that puts deny/ask gates in front of the secret/prod surface.**
 
 Multi-agent setups usually pass context by **copying chat** between agents: lossy, token-expensive, drift-prone. This is the opposite — agents coordinate through three small files and a `git`-based sync, so a handoff costs **one brief, not the whole history**.
 
@@ -60,7 +60,7 @@ Tell agent A: *"write the next task into `TASK.md`"*; tell agent B: *"do `TASK.m
 
 ```bash
 pip install -e .          # provides the `agent-guard` command + the agent_guard package
-python -m pytest -q       # 20 offline tests, no network
+python -m pytest -q       # offline test suite, no network
 ```
 
 ```python
@@ -81,6 +81,9 @@ echo '{"tool_input": {"command": "pytest -q"}}' | python -m agent_guard
 # (no output — allow means the guard stays out of the way)
 ```
 
+Works the same from bash and PowerShell: the guard reads stdin as UTF-8 and strips a
+BOM, regardless of console locale.
+
 Wire it as a [Claude Code PreToolUse hook](https://docs.claude.com/en/docs/claude-code/hooks) in `.claude/settings.json`:
 
 ```json
@@ -94,6 +97,18 @@ Wire it as a [Claude Code PreToolUse hook](https://docs.claude.com/en/docs/claud
 (`deny_paths` / `confirm_paths` / `deny_command_patterns` / `confirm_command_patterns`).
 Defaults protect SSH keys, `.pem`, `.env`, `secrets/`, force-push, `rm -rf /`, `curl | sh`, `sudo`.
 
+Config rules worth knowing:
+
+- **Per-key replace, not append** — a key in your `guard_config.json` replaces that default
+  list entirely; start from the example file to keep the defaults underneath.
+- **Mistakes are loud but never fatal** — malformed JSON falls back to defaults, a key with
+  the wrong type keeps its default, an invalid regex is dropped, an unknown key (a typo like
+  `deny_path`) is ignored; every case prints an `agent-guard:` warning to **stderr** while
+  stdout stays a clean hook channel and the exit code stays 0.
+- **Matching is deliberately over-eager** — path patterns also match as substrings
+  (`.env` flags `x.environment.py` too). For a guard that's the right direction:
+  a false *ask* costs one confirmation; a miss costs a secret.
+
 ---
 
 ## Docs
@@ -101,6 +116,17 @@ Defaults protect SSH keys, `.pem`, `.env`, `secrets/`, force-push, `rm -rf /`, `
 - [Project map](docs/project-map.md) — what's where, guard internals, reviewer checklist.
 - [Use cases](docs/use-cases.md) — workflows, what this is *not* (incl. "not a sandbox"), residual risk.
 - [Protocol](docs/protocol.md) — why files beat chat, the loop.
+
+---
+
+## What this is not
+
+- **Not a security sandbox.** The guard pattern-matches *known-shaped* dangerous calls at one
+  hook point — a seatbelt, not a container. A novel or obfuscated command that matches no
+  pattern passes through. Pair it with real isolation for untrusted work.
+- **Not an orchestration framework.** The protocol is files + git + discipline; there is no
+  runtime to install or operate.
+- **Not a guarantee.** Details and residual risk: [docs/use-cases.md](docs/use-cases.md).
 
 ---
 
