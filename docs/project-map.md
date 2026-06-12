@@ -69,7 +69,7 @@ python -m ruff check .
 echo '{"tool_input": {"file_path": ".env"}}' | python -m agent_guard   # -> "ask" JSON
 ```
 
-CI runs pytest on Python 3.9 / 3.11 / 3.12.
+CI runs pytest and ruff on Python 3.9 / 3.11 / 3.12.
 
 ## How to extend safely
 
@@ -88,7 +88,7 @@ CI runs pytest on Python 3.9 / 3.11 / 3.12.
 - [ ] `decide()` still pure and returns `(decision, reason)` with
       `decision ∈ {deny, ask, allow}`.
 - [ ] Guard still exits 0 in every path (a crashing guard = a blocked agent).
-- [ ] Malformed config/stdin still falls back to allow-with-defaults, silently.
+- [ ] Malformed config still falls back to defaults; malformed stdin still silently allows.
 - [ ] Zero runtime dependencies preserved.
 - [ ] New patterns covered by both a positive and a negative test
       (see `test_rm_rf_subdir_is_allowed` for the style).
