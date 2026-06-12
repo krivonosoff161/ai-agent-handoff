@@ -4,13 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-agent-handoff"
-version = "0.1.0"
+version = "0.2.0"
 description = "File-based handoff protocol for AI coding agents + a PreToolUse safety guard."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "krivonosoff161" }]
 keywords = ["ai", "agents", "claude", "codex", "hooks", "safety", "handoff", "guardrails", "developer-tools"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = []
 
 [project.optional-dependencies]
@@ -21,6 +33,7 @@ agent-guard = "agent_guard:main"
 
 [project.urls]
 Homepage = "https://github.com/krivonosoff161/ai-agent-handoff"
+Changelog = "https://github.com/krivonosoff161/ai-agent-handoff/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 where = ["src"]

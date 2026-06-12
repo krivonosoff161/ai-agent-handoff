@@ -3,4 +3,4 @@
 from .guard import DEFAULT_CONFIG, decide, load_config, main
 
 __all__ = ["decide", "load_config", "main", "DEFAULT_CONFIG"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"
