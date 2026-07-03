@@ -139,6 +139,7 @@ Config rules worth knowing:
 - [Project map](docs/project-map.md) — what's where, guard internals, reviewer checklist.
 - [Use cases](docs/use-cases.md) — workflows, what this is *not* (incl. "not a sandbox"), residual risk.
 - [Protocol](docs/protocol.md) — why files beat chat, the loop.
+- [Trust boundaries](docs/trust-boundaries.md) — what the handoff files, git trail, and guard can prove, and where stronger verification starts.
 
 ---
 

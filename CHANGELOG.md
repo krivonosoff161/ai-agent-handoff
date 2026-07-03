@@ -6,6 +6,8 @@
 - Added first-screen positioning for `ai-agent-handoff` as the handoff/protocol
   layer in the public Agentic AI Security toolchain, linking the playbooks,
   transfer verifier, and security harness without expanding safety claims.
+- Added a trust-boundary map for handoff artifacts, git evidence, guard
+  decisions, residual risk, and escalation to verifier/harness layers.
 
 ### Fixed
 - An invalid regex in `guard_config.json` no longer crashes the guard on
