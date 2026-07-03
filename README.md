@@ -12,6 +12,29 @@ Multi-agent setups usually pass context by **copying chat** between agents: loss
 
 ---
 
+## Where it fits
+
+This repository is the handoff/protocol layer in the public Agentic AI Security
+toolchain:
+
+```
+llm-safety-playbooks -> ai-agent-handoff -> agentic-transfer-verifier -> agentic-security-harness
+```
+
+- [`llm-safety-playbooks`](https://github.com/krivonosoff161/llm-safety-playbooks)
+  makes the human/agent task boundary explicit.
+- `ai-agent-handoff` turns that boundary into durable files and a reviewable git
+  trail.
+- [`agentic-transfer-verifier`](https://github.com/krivonosoff161/agentic-transfer-verifier)
+  checks provenance, trust, and authority claims across handoffs.
+- [`agentic-security-harness`](https://github.com/krivonosoff161/agentic-security-harness)
+  measures boundary failures with traces, scorecards, and reports.
+
+The guard is a local seatbelt for known-shaped risky paths and commands. It is
+not a sandbox and does not claim to make an agent safe by itself.
+
+---
+
 ## The loop
 
 ```

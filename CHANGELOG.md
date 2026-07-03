@@ -2,6 +2,11 @@
 
 ## 0.2.0 — unreleased
 
+### Docs
+- Added first-screen positioning for `ai-agent-handoff` as the handoff/protocol
+  layer in the public Agentic AI Security toolchain, linking the playbooks,
+  transfer verifier, and security harness without expanding safety claims.
+
 ### Fixed
 - An invalid regex in `guard_config.json` no longer crashes the guard on
   every tool call (it used to raise `re.error` and exit non-zero, breaking
