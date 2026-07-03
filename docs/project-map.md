@@ -15,6 +15,27 @@ Two independent pieces that work together:
 
 Either piece is usable without the other.
 
+## Public security-stack relationship
+
+This project is the handoff/protocol layer in the public Agentic AI Security
+toolchain:
+
+```
+llm-safety-playbooks -> ai-agent-handoff -> agentic-transfer-verifier -> agentic-security-harness
+```
+
+- `llm-safety-playbooks` defines compact task briefs and safety boundaries.
+- `ai-agent-handoff` stores the brief, live state, and return channel as files
+  that can be reviewed with git.
+- `agentic-transfer-verifier` inspects provenance, trust, authority, and approval
+  claims around those handoffs.
+- `agentic-security-harness` turns boundary failures into replayable evidence.
+
+The relationship is intentionally layered: playbooks and handoff discipline make
+agent work easier to review, verification checks whether handoff claims are
+trustworthy, and the harness measures failure patterns. None of these layers is
+a sandbox or a complete safety guarantee.
+
 ## Mental model
 
 ```
