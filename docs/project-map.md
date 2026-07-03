@@ -53,6 +53,7 @@ guard (code):         tool-call JSON on stdin ─► decide(tool_input, config)
 |---|---|
 | `templates/TASK.md` · `SESSION.md` · `AGENTS.md` · `ODAF.md` | the protocol — copy into your project and fill in |
 | `docs/protocol.md` | why files beat chat; the loop diagram |
+| `docs/trust-boundaries.md` | trust model: artifact claims, limits, and escalation path to stronger verification |
 | `examples/TASK.example.md` → `SESSION.example.md` | one filled-in handoff, end to end |
 | `src/agent_guard/guard.py` | all guard logic: `DEFAULT_CONFIG`, `load_config()`, pure `decide()`, `main()` stdin/stdout entry |
 | `guard_config.example.json` | starting point for per-project rules |
