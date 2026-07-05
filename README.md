@@ -33,6 +33,11 @@ llm-safety-playbooks -> ai-agent-handoff -> agentic-transfer-verifier -> agentic
 The guard is a local seatbelt for known-shaped risky paths and commands. It is
 not a sandbox and does not claim to make an agent safe by itself.
 
+Portfolio-level documentation authority and public/private storage rules live in
+the [Documentation Contract](https://github.com/krivonosoff161/krivonosoff161/blob/main/docs/documentation-contract.md).
+This repository owns the handoff protocol and guard; it does not redefine the
+whole portfolio.
+
 ---
 
 ## The loop
