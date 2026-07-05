@@ -1,5 +1,10 @@
 # Trust Boundaries
 
+Portfolio-level documentation authority and public/private storage rules live in
+the [Documentation Contract](https://github.com/krivonosoff161/krivonosoff161/blob/main/docs/documentation-contract.md).
+This page defines only the local trust boundary of handoff files, the git
+trail, and the guard.
+
 This project makes agent handoffs easier to review. It does not make every
 handoff trustworthy by itself.
 
