@@ -28,8 +28,10 @@ Use the filesystem as shared memory. Three files do the work:
 ## Why it's cheap
 B never re-reads the conversation — it reads one brief. A never re-reads B's work
 turn-by-turn — it reads one return block + `git diff`. Token cost is **O(brief)**, not
-**O(history)**. It also scales past two agents: anyone who reads the three files is in sync,
-and it survives an agent's context reset (the files persist).
+**O(history)**. The files persist across a context reset and can be shared by more
+than two agents, but reading them does not prove freshness or synchronization. The
+protocol has no locking, ordering, or concurrent-writer guarantee; Git state and the
+handoff revision must be verified explicitly.
 
 ## Safety
 The `NEVER` list in `AGENTS.md` is backed mechanically by a PreToolUse guard

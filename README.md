@@ -57,9 +57,11 @@ whole portfolio.
 1. **A → B:** A writes a self-contained `TASK.md` (ODAF: Outcome · Data · Action · Format).
 2. **B executes:** reads the brief — no dialog replay — works in a branch.
 3. **B → A:** appends a `↪ Return` block to `SESSION.md` and commits.
-4. **A syncs:** reads `SESSION.md` + `git diff`. In sync, zero human relay.
+4. **A reviews:** reads `SESSION.md` + `git diff` and verifies freshness and scope.
 
-Token cost is **O(brief)**, not **O(history)** — and it survives context resets, because the files persist. See [docs/protocol.md](docs/protocol.md).
+Token cost is **O(brief)**, not **O(history)**. The files survive a context reset,
+but freshness, sequencing, concurrent writers, and repository state still require
+explicit verification. See [docs/protocol.md](docs/protocol.md).
 
 ---
 
@@ -164,8 +166,10 @@ Config rules worth knowing:
 ## Why files beat chat
 
 - **Cheap:** B reads one brief, not the whole conversation; A reads one return + `git diff`.
-- **Robust:** survives an agent's context reset — the contract is on disk.
-- **Scales:** any number of agents stay in sync by reading the same three files.
+- **Durable:** files remain available after a context reset; they do not prove that
+  the resumed agent loaded the latest revision.
+- **Shareable:** multiple agents can read the same files, but the protocol does not
+  provide locking, ordering, merge, or concurrency guarantees.
 - **Auditable:** everything is `git`-versioned; the guard hook is the safety net.
 
 ---
