@@ -56,6 +56,10 @@ guard (code):         tool-call JSON on stdin ─► decide(tool_input, config)
 | `docs/trust-boundaries.md` | trust model: artifact claims, limits, and escalation path to stronger verification |
 | `examples/TASK.example.md` → `SESSION.example.md` | one filled-in handoff, end to end |
 | `src/agent_guard/guard.py` | all guard logic: `DEFAULT_CONFIG`, `load_config()`, pure `decide()`, `main()` stdin/stdout entry |
+| `src/agent_guard/handoff_metadata.py` | strict optional metadata sidecar, sequence validation, digest-only portfolio projection, loss audit and canonical wire commitment |
+| `contracts/handoff-metadata.v1.schema.json` | local strict metadata-sidecar schema |
+| `contracts/portfolio-observation.v1.schema.json` | exact vendored owner schema pinned to the Harness main SHA recorded beside it |
+| `contracts/portfolio-observation.v1.manifest.json` | exact owner limits, canonicalization, event-id semantics and commitment-domain manifest |
 | `guard_config.example.json` | starting point for per-project rules |
 | `tests/test_guard.py` | offline tests: every decision branch, config validation/fallbacks, real-subprocess CLI behavior |
 | `tests/test_protocol_files.py` | pins the protocol contract: templates and the example keep their documented sections |

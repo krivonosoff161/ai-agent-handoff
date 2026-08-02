@@ -45,6 +45,7 @@ This trust model uses public references as vocabulary, not as a certification:
 | Git branch and diff | Which files changed and how the public history moved. | That the change is safe, correct, reviewed, or free of hidden side effects. |
 | Commit message | The claimed intent of a change. | That the implementation matches the intent. |
 | `agent_guard` decision | Whether one observed tool call matched configured deny/ask/allow patterns. | That a sequence of allowed calls is safe, or that an obfuscated or novel risky call will be caught. |
+| Handoff metadata sidecar | Exact artifact-byte digest, bounded metadata shape, monotonic sequence and parent linkage after local verification. | Producer identity or authority, semantic truth of the Markdown, authorization, concurrency safety, or absence of omitted context. |
 
 ## Trust Checks
 
@@ -100,3 +101,7 @@ The protocol should stay small enough that an agent can actually follow it
 during normal work. If a claim needs cryptographic binding, provenance graphs,
 formal scoring, replay, or adversarial testing, it belongs in a verifier or
 harness layer, not in these handoff templates.
+
+The optional metadata adapter follows that rule: it exports digest-only,
+unattested, authority-free observations. Its `event_id` is a producer identifier;
+the separate portfolio commitment binds the exact canonical observation bytes.

@@ -69,6 +69,9 @@ explicit verification. See [docs/protocol.md](docs/protocol.md).
 
 - **[templates/](templates/)** — `TASK.md` (ODAF brief) · `SESSION.md` (live state + return channel) · `AGENTS.md` (rules + roles) · `ODAF.md` (task framing).
 - **[src/agent_guard/](src/agent_guard/)** — an installable PreToolUse safety guard (deny / ask / allow) for secrets, prod, and dangerous commands. Zero dependencies, tested.
+- **[Handoff metadata sidecar](docs/handoff-metadata-sidecar.md)** — a strict,
+  bounded digest-and-sequence record that projects to the portfolio observation
+  contract without publishing the Markdown body or granting authority.
 - **[examples/](examples/)** — a filled-in `TASK.md` → `SESSION.md` return for a real task.
 - **[docs/protocol.md](docs/protocol.md)** — the loop, the diagram, and why it's cheap.
 
@@ -149,6 +152,8 @@ Config rules worth knowing:
 - [Use cases](docs/use-cases.md) — workflows, what this is *not* (incl. "not a sandbox"), residual risk.
 - [Protocol](docs/protocol.md) — why files beat chat, the loop.
 - [Trust boundaries](docs/trust-boundaries.md) — what the handoff files, git trail, and guard can prove, and where stronger verification starts.
+- [Metadata sidecar](docs/handoff-metadata-sidecar.md) — integrity, sequence,
+  replay and authority limits for machine-readable handoff observations.
 
 ---
 

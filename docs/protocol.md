@@ -33,6 +33,20 @@ than two agents, but reading them does not prove freshness or synchronization. T
 protocol has no locking, ordering, or concurrent-writer guarantee; Git state and the
 handoff revision must be verified explicitly.
 
+## Optional metadata sidecar
+
+Machines that need bounded integrity and ordering evidence may attach a canonical
+`handoff-metadata-v1.0` JSON sidecar to a `TASK.md` or `SESSION.md` artifact. The
+sidecar records only an artifact digest, artifact kind, monotonic sequence,
+timestamp, hashed producer claim, and optional parent digest. The adapter verifies
+the caller-supplied artifact bytes before emitting a canonical portfolio
+observation. It never emits the Markdown body. See
+[handoff-metadata-sidecar.md](handoff-metadata-sidecar.md).
+
+The sidecar does not authenticate the producer, resolve concurrent writers, or
+grant permission. A missing previous record, replay, gap, rollback, wrong parent,
+or artifact digest mismatch fails closed.
+
 ## Safety
 The `NEVER` list in `AGENTS.md` is backed mechanically by a PreToolUse guard
 (`agent_guard`, wired as `python -m agent_guard`): edits to secrets/prod or dangerous
