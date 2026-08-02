@@ -1,0 +1,13 @@
+{
+  "schema_version": "handoff-owner-contract-pin-v1.0",
+  "owner_repository": "krivonosoff161/agentic-security-harness",
+  "owner_main_sha": "372ce4161b1e9232215835b8dc4f3014d4726f34",
+  "contract_id": "portfolio-observation-v1.0",
+  "vendored_schema_path": "contracts/portfolio-observation.v1.schema.json",
+  "vendored_manifest_path": "contracts/portfolio-observation.v1.manifest.json",
+  "schema_sha256": "19371f188b080accfdac489e985b9642f547c3300c0b56b44527eb97f550c26f",
+  "owner_manifest_sha256": "fecbe08da3e48250aaeff2ea19bf50efdbd2c3aa532af9cae8be50b4c8321554",
+  "adapter_audit_source_model": "handoff.metadata_sidecar",
+  "producer_attestation": "unattested_only",
+  "operational_authority": "none"
+}
