@@ -1,17 +1,18 @@
 {
   "schema_version": "SecurityPortfolioLocalContract.v2",
-  "roadmap_version": "2026.07.31-rc1",
+  "roadmap_version": "2026.08.02-r4-trajectory-containment",
   "upstream_projection_source_hint": "https://github.com/krivonosoff161/krivonosoff161/blob/main/docs/security-portfolio-roadmap-public.yaml",
-  "public_projection_sha256": "d960d5a710c152c28ad9837ebd665a476d0fc99562076ff6f1c5f24e73dd0bd6",
-  "public_projection_size": 28926,
+  "upstream_projection_source_semantics": "publication_location_only_not_digest_authority",
+  "public_projection_sha256": "845c00e37a2fe993994db0190d8b2d0f8cf1872fe75f66e86fe20511be144fca",
+  "public_projection_size": 38284,
   "vendored_projection_path": "docs/security-portfolio-roadmap-public.yaml",
-  "upstream_private_source_sha256": "181a0dd7fad62699693895b1bd5189c91984140a48a35afe811d948efee57fca",
+  "upstream_private_source_sha256": "b390c467da372a8f1d8db0ed85afab5e96d4187a6d8a056a6b3541472679f69d",
   "repository_id": "ai-agent-handoff",
   "roadmap_authority": "owned_module_projection",
   "owned_modules": [
     {
       "id": "M13-handoff-edge",
-      "status": "implemented_pattern_guard"
+      "status": "implemented_development"
     }
   ],
   "forbidden_promotions": [
