@@ -1,6 +1,15 @@
 # ai-agent-handoff
 
-Portfolio ownership and evidence ceilings: [Security Portfolio module contract](docs/security-portfolio-roadmap.md).
+This package is the handoff/protocol component of the
+[Agentic Security Harness ecosystem](https://github.com/krivonosoff161/agentic-security-harness/blob/main/docs/ecosystem-roadmap.md).
+Its source-owned identity and ordered integration gates are recorded in
+[`component.yaml`](component.yaml) and the
+[component roadmap](docs/component-roadmap.md).
+
+Current ecosystem status is **contract-only**: the package is independently usable, but
+it is not yet an installable `ash` extension. The former
+[Security Portfolio module contract](docs/security-portfolio-roadmap.md) is preserved as
+historical, digest-bound R4 evidence.
 
 [![Tests](https://github.com/krivonosoff161/ai-agent-handoff/actions/workflows/tests.yml/badge.svg)](https://github.com/krivonosoff161/ai-agent-handoff/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -148,6 +157,7 @@ Config rules worth knowing:
 
 ## Docs
 
+- [Component roadmap](docs/component-roadmap.md) — source-owned status and ordered ecosystem integration gates.
 - [Project map](docs/project-map.md) — what's where, guard internals, reviewer checklist.
 - [Use cases](docs/use-cases.md) — workflows, what this is *not* (incl. "not a sandbox"), residual risk.
 - [Protocol](docs/protocol.md) — why files beat chat, the loop.
