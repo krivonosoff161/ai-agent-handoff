@@ -33,6 +33,7 @@ jobs:
           python tools/secret_hygiene.py
       - name: Source-owned and vendored contract checks
         run: |
+          python tools/harness_extension_contracts.py check
           python -m pytest -q -p no:cacheprovider tests/test_ecosystem_component_contract.py tests/test_security_portfolio_roadmap_contract.py tests/test_handoff_metadata.py
 
   package-contract:
@@ -60,3 +61,40 @@ jobs:
         run: python -m build --sdist --wheel
       - name: Isolated installed-wheel API and agent-guard smoke
         run: python tools/package_smoke.py --dist-dir dist --expected-version 0.2.0
+
+  harness-extension-contract:
+    name: harness-extension (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - name: Check out Handoff
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check out exact Harness distribution and lifecycle source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: krivonosoff161/agentic-security-harness
+          ref: 285d05ad64239dd55271e5c534041b235db0e243
+          path: components/harness
+          persist-credentials: false
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install exact local test surfaces
+        run: |
+          python -m pip install ".[dev]"
+          python -m pip install ./components/harness
+      - name: Validate source-owned contract and installed-wheel lifecycle
+        env:
+          ASH_HANDOFF_EXTENSION_HARNESS_ROOT: ${{ github.workspace }}/components/harness
+        run: |
+          python tools/harness_extension_contracts.py check
+          python -m pytest -q -p no:cacheprovider tests/test_harness_extension_distribution.py
+          python -m build --wheel --sdist --outdir extension-dist extensions/harness-v1

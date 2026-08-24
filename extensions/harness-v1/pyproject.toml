@@ -1,0 +1,19 @@
+[build-system]
+requires = []
+build-backend = "handoff_extension_backend"
+backend-path = ["."]
+
+[project]
+name = "ai-agent-handoff-harness-extension"
+version = "1.0.0"
+description = "Optional advisory-only AI Agent Handoff extension for Agentic Security Harness."
+requires-python = ">=3.11,<3.14"
+dependencies = []
+
+[project.entry-points."agentic_security_harness.extensions.v1"]
+"ai-agent-handoff.validation" = "ai_agent_handoff_harness_extension:build_extension"
+
+[tool.ai-agent-handoff.harness-extension]
+required-harness = "agentic-security-harness>=1.3,<2"
+required-handoff = "ai-agent-handoff>=0.2,<1"
+dependency-resolution = "operator-preflight-only"

@@ -20,6 +20,13 @@ tests. The scan reports rule identifiers and locations, never matching values. W
 actions are pinned to exact commits, repository permission is read-only, and checkout
 credentials are not persisted.
 
+A separate Python 3.11/3.13 Linux/Windows matrix validates the optional nested Harness
+extension. It checks out the exact source-level Distribution Discovery and lifecycle
+contract, builds the dependency-free six-file wheel, safely unpacks it, proves inspection
+and approval occur before explicit code loading, then constructs, binds, and runs the
+extension over synthetic content-free observations. The matrix does not contact a package
+index beyond installing declared test tooling, invoke a provider, or consume live data.
+
 These checks demonstrate artifact completeness and behavior on the declared test matrix.
 They do not prove absence of every secret or vulnerability, make the pattern guard a
 sandbox, authenticate handoff authors, install a Harness extension, or grant operational
