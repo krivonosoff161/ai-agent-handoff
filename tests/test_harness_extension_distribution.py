@@ -10,7 +10,7 @@ import subprocess
 import sys
 import types
 import zipfile
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 
 import pytest
@@ -179,12 +179,13 @@ def test_nested_project_declares_closed_noninstalling_dependency_boundary() -> N
     ).encode() + b"\n" == configuration
     decoded = json.loads(configuration)
     assert decoded["handoff_runtime_version"] == "0.2.0"
+    assert decoded["handoff_runtime_byte_semantics"] == "utf8_canonical_lf"
     assert decoded["handoff_runtime_bindings"] == {
         "agent_guard/__init__.py": (
-            "b8830cf85e6f2b34e15e5b8dd6243a4ac5b677cc54a11ceac39aaec64dc03962"
+            "5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6"
         ),
         "agent_guard/guard.py": (
-            "d9dd728c876879e6f32862695b519f948c92bfcb9d790bf9c30edbac67db372c"
+            "80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932"
         ),
         "agent_guard/handoff_metadata.py": (
             "471bbed70ddb483d04be47cc7de8c8eb7024fc112fac39ab2248ddc94366cc25"
@@ -283,7 +284,7 @@ def test_exact_installed_wheel_inspection_approval_lifecycle_and_receipt(
                     "project_id": "ai-agent-handoff",
                     "repository_id": "example/synthetic-handoff",
                     "repository_sha": "b" * 40,
-                    "occurred_at": datetime(2026, 8, 24, tzinfo=UTC),
+                    "occurred_at": datetime(2026, 8, 24, tzinfo=timezone.utc),
                     "producer_id_hash": "c" * 64,
                     "producer_attestation": "unattested",
                     "source_surface": "agent",
@@ -571,6 +572,36 @@ def test_bound_readers_reject_oversize_growth_and_equal_size_drift(
                 extension_module._stable_bound_bytes(
                     equal_size, expected_sha256=None, label="synthetic binding"
                 )
+
+        lf = tmp_path / "lf.py"
+        crlf = tmp_path / "crlf.py"
+        bare_cr = tmp_path / "bare-cr.py"
+        lf.write_bytes(b"alpha\nbeta\n")
+        crlf.write_bytes(b"alpha\r\nbeta\r\n")
+        bare_cr.write_bytes(b"alpha\rbeta\n")
+        canonical_digest = hashlib.sha256(lf.read_bytes()).hexdigest()
+        assert extension_module._stable_bound_bytes(
+            lf,
+            canonical_digest,
+            label="synthetic binding",
+            canonical_lf=True,
+        ) == lf.read_bytes()
+        assert extension_module._stable_bound_bytes(
+            crlf,
+            canonical_digest,
+            label="synthetic binding",
+            canonical_lf=True,
+        ) == crlf.read_bytes()
+        with pytest.raises(
+            extension_module.HandoffHarnessExtensionError,
+            match="non-canonical CR byte",
+        ):
+            extension_module._stable_bound_bytes(
+                bare_cr,
+                canonical_digest,
+                label="synthetic binding",
+                canonical_lf=True,
+            )
     finally:
         sys.path.remove(str(EXTENSION_ROOT / "src"))
         sys.path.remove(str(harness_root / "src"))

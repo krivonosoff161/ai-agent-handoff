@@ -29,9 +29,10 @@ CANONICAL_CONFIGURATION_BYTES = (
     b'{"dependency_resolution":"operator_preflight_only",'
     b'"handoff_distribution":"ai-agent-handoff",'
     b'"handoff_runtime_bindings":{'
-    b'"agent_guard/__init__.py":"b8830cf85e6f2b34e15e5b8dd6243a4ac5b677cc54a11ceac39aaec64dc03962",'
-    b'"agent_guard/guard.py":"d9dd728c876879e6f32862695b519f948c92bfcb9d790bf9c30edbac67db372c",'
+    b'"agent_guard/__init__.py":"5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6",'
+    b'"agent_guard/guard.py":"80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932",'
     b'"agent_guard/handoff_metadata.py":"471bbed70ddb483d04be47cc7de8c8eb7024fc112fac39ab2248ddc94366cc25"},'
+    b'"handoff_runtime_byte_semantics":"utf8_canonical_lf",'
     b'"handoff_runtime_version":"0.2.0",'
     b'"handoff_version_specifier":">=0.2,<1",'
     b'"harness_distribution":"agentic-security-harness",'
@@ -43,11 +44,11 @@ HANDOFF_RUNTIME_VERSION = "0.2.0"
 HANDOFF_RUNTIME_BINDINGS = (
     (
         "agent_guard/__init__.py",
-        "b8830cf85e6f2b34e15e5b8dd6243a4ac5b677cc54a11ceac39aaec64dc03962",
+        "5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6",
     ),
     (
         "agent_guard/guard.py",
-        "d9dd728c876879e6f32862695b519f948c92bfcb9d790bf9c30edbac67db372c",
+        "80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932",
     ),
     (
         "agent_guard/handoff_metadata.py",
@@ -112,13 +113,25 @@ def _bounded_file_snapshot(
 
 
 def _stable_bound_bytes(
-    path: Path, expected_sha256: str | None, *, label: str
+    path: Path,
+    expected_sha256: str | None,
+    *,
+    label: str,
+    canonical_lf: bool = False,
 ) -> bytes:
     first, first_identity = _bounded_file_snapshot(path, label=label)
     second, second_identity = _bounded_file_snapshot(path, label=label)
     if first_identity != second_identity or first != second:
         raise HandoffHarnessExtensionError(f"{label} changed between bounded reads")
-    if expected_sha256 is not None and hashlib.sha256(first).hexdigest() != expected_sha256:
+    digest_bytes = first
+    if canonical_lf:
+        digest_bytes = digest_bytes.replace(b"\r\n", b"\n")
+        if b"\r" in digest_bytes:
+            raise HandoffHarnessExtensionError(f"{label} contains a non-canonical CR byte")
+    if (
+        expected_sha256 is not None
+        and hashlib.sha256(digest_bytes).hexdigest() != expected_sha256
+    ):
         raise HandoffHarnessExtensionError(f"{label} digest drift")
     return first
 
@@ -188,7 +201,10 @@ def _verified_handoff_codec() -> tuple[
 
     for relative, digest in HANDOFF_RUNTIME_BINDINGS:
         _stable_bound_bytes(
-            expected_paths[relative], digest, label="Handoff runtime binding"
+            expected_paths[relative],
+            digest,
+            label="Handoff runtime binding",
+            canonical_lf=True,
         )
 
     try:
@@ -211,7 +227,10 @@ def _verified_handoff_codec() -> tuple[
                     "Handoff runtime import origin differs from verified bytes"
                 )
             _stable_bound_bytes(
-                expected_paths[relative], digest, label="Handoff runtime binding"
+                expected_paths[relative],
+                digest,
+                label="Handoff runtime binding",
+                canonical_lf=True,
             )
         decoder = getattr(module, "decode_portfolio_observation_v1", None)
         encoder = getattr(module, "encode_portfolio_observation_v1", None)

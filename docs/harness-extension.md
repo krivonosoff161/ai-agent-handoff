@@ -9,8 +9,9 @@ Python 3.9+ guard unchanged. The optional extension requires Python `>=3.11,<3.1
 ## Controlled operator sequence
 
 1. Install and verify `ai-agent-handoff>=0.2,<1` and a compatible Harness environment.
-   This V1 factory additionally requires exact Handoff 0.2.0 runtime bytes whose three
-   digests are public in `ash-extension-config.json`.
+   This V1 factory additionally requires exact Handoff 0.2.0 canonical-LF runtime bytes
+   whose three digests are public in `ash-extension-config.json`. CRLF and LF source
+   materializations have the same declared text commitment; a bare CR is rejected.
 2. Build the nested wheel locally. It declares no `Requires-Dist`, because Harness
    Distribution Discovery V1 rejects dependency-bearing extension wheels.
 3. Install it into a dedicated inspection root with

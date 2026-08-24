@@ -11,7 +11,9 @@ pre-1.3 Harness source candidate used by this repository's compatibility CI is p
 package-version claim.
 
 The V1 factory is narrower than the compatibility range: it accepts only Handoff 0.2.0
-with the three exact public runtime-file digests recorded in `ash-extension-config.json`.
+with the three exact canonical-LF public runtime-file digests recorded in
+`ash-extension-config.json`. LF and CRLF source materializations commit to the same text;
+bare CR bytes are rejected.
 It rejects an already-loaded `agent_guard` namespace, verifies those files before import,
 binds all import origins, and verifies the bytes again after import. This closes ambient
 module and alternate-path execution at the approval-to-factory boundary.

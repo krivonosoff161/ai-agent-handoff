@@ -1,6 +1,8 @@
 docs/security-portfolio-roadmap-* text eol=lf
 contracts/*.json text eol=lf
 docs/handoff-metadata-sidecar.md text eol=lf
+src/agent_guard/__init__.py text eol=lf
+src/agent_guard/guard.py text eol=lf
 src/agent_guard/handoff_metadata.py text eol=lf
 tests/test_handoff_metadata.py text eol=lf
 tests/fixtures/portfolio-observation-v1/*.json text eol=lf
