@@ -38,6 +38,8 @@ No later gate is satisfied by documentation alone.
 - Standalone package metadata supports Python 3.9 and later.
 - The initial ecosystem compatibility contour is Python 3.11 or later on Linux and
   Windows.
+- Standalone package CI exercises Python 3.9-3.12 on both Linux and Windows, including
+  source and wheel builds plus installed `agent-guard` and metadata-contract smoke.
 - Harness API compatibility is `not-yet-declared` until an executable Extension SDK
   contract and cross-repository test exist.
 

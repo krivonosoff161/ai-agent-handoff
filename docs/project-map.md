@@ -100,7 +100,10 @@ python -m ruff check .
 echo '{"tool_input": {"file_path": ".env"}}' | python -m agent_guard   # -> "ask" JSON
 ```
 
-CI runs pytest and ruff on Python 3.9 / 3.11 / 3.12.
+CI runs the package suite on Linux and Windows for Python 3.9-3.12. A separate
+quality job runs Ruff, mypy, Bandit, public-tree hygiene, and the source-owned and
+vendored contract tests. Distribution checks and their limits are documented in
+[`docs/package-ci.md`](package-ci.md).
 
 ## How to extend safely
 

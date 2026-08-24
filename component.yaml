@@ -50,6 +50,7 @@
   "docs": [
     {"path": "README.md", "role": "component-front-door"},
     {"path": "docs/component-roadmap.md", "role": "component-owned"},
+    {"path": "docs/package-ci.md", "role": "component-owned"},
     {"path": "docs/project-map.md", "role": "component-owned"},
     {"path": "docs/security-portfolio-roadmap.md", "role": "historical"},
     {"path": "docs/security-portfolio-roadmap-public.yaml", "role": "historical"},
@@ -60,7 +61,7 @@
     "python": ">=3.11",
     "platforms": {
       "supported": ["linux", "windows"],
-      "tested": ["linux"]
+      "tested": ["linux", "windows"]
     }
   },
   "integration_status": "contract_only",
@@ -69,7 +70,10 @@
     "tests/test_handoff_metadata.py",
     "tests/test_protocol_files.py",
     "contracts/handoff-metadata.v1.schema.json",
-    "contracts/portfolio-observation.v1.manifest.json"
+    "contracts/portfolio-observation.v1.manifest.json",
+    ".github/workflows/tests.yml",
+    "tools/package_smoke.py",
+    "tools/secret_hygiene.py"
   ],
   "claims": [
     "file-based handoff protocol",

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,13 +8,13 @@ version = "0.2.0"
 description = "File-based handoff protocol for AI coding agents + a PreToolUse safety guard."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "krivonosoff161" }]
 keywords = ["ai", "agents", "claude", "codex", "hooks", "safety", "handoff", "guardrails", "developer-tools"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -26,7 +26,13 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=7", "ruff>=0.6"]
+dev = [
+    "bandit>=1.7.10",
+    "build>=1.2.2",
+    "mypy>=1.11",
+    "pytest>=7",
+    "ruff>=0.6",
+]
 
 [project.scripts]
 agent-guard = "agent_guard:main"

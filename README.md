@@ -103,9 +103,15 @@ Tell agent A: *"write the next task into `TASK.md`"*; tell agent B: *"do `TASK.m
 ## The safety guard
 
 ```bash
-pip install -e .          # provides the `agent-guard` command + the agent_guard package
+pip install .             # provides the `agent-guard` command + the agent_guard package
 python -m pytest -q       # offline test suite, no network
 ```
+
+For contributor work, use `pip install -e .[dev]`. The wheel intentionally contains the
+Python API and `agent-guard` entry point only. Protocol templates, examples, contracts,
+and reviewer documentation are included in the source distribution and repository. CI
+builds and inspects both artifacts on Linux and Windows across Python 3.9-3.12; see the
+[package and CI contract](docs/package-ci.md).
 
 ```python
 from agent_guard import decide
@@ -164,6 +170,8 @@ Config rules worth knowing:
 - [Trust boundaries](docs/trust-boundaries.md) — what the handoff files, git trail, and guard can prove, and where stronger verification starts.
 - [Metadata sidecar](docs/handoff-metadata-sidecar.md) — integrity, sequence,
   replay and authority limits for machine-readable handoff observations.
+- [Package and CI contract](docs/package-ci.md) — source/wheel contents and tested
+  operating-system/Python matrix.
 
 ---
 

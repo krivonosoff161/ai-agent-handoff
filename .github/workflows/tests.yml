@@ -2,27 +2,61 @@ name: Tests
 
 on:
   push:
-    branches: [main]
   pull_request:
-    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: handoff-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  quality:
+    name: static-contract-quality
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install quality tools
+        run: python -m pip install ".[dev]"
+      - name: Static and public-tree hygiene gates
+        run: |
+          python -m ruff check --no-cache .
+          python -m mypy --no-incremental src
+          python -m bandit -q -r src -ll
+          python tools/secret_hygiene.py
+      - name: Source-owned and vendored contract checks
+        run: |
+          python -m pytest -q -p no:cacheprovider tests/test_ecosystem_component_contract.py tests/test_security_portfolio_roadmap_contract.py tests/test_handoff_metadata.py
+
+  package-contract:
+    name: package-contract (${{ matrix.os }}, py${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .[dev]
-      - name: Lint
-        run: python -m ruff check .
-      - name: Run tests
-        run: python -m pytest -q
+          cache: pip
+      - name: Install test and build tools
+        run: python -m pip install ".[dev]"
+      - name: Full offline test suite
+        run: python -m pytest -q -p no:cacheprovider
+      - name: Build source and wheel distributions
+        run: python -m build --sdist --wheel
+      - name: Isolated installed-wheel API and agent-guard smoke
+        run: python tools/package_smoke.py --dist-dir dist --expected-version 0.2.0
