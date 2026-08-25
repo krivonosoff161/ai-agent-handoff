@@ -66,7 +66,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
         "python": ">=3.11",
         "platforms": {
             "supported": ["linux", "windows"],
-            "tested": ["linux"],
+            "tested": ["linux", "windows"],
         },
     }
     assert manifest["owns"]["modules"] == ["M13-handoff-edge"]
@@ -81,6 +81,7 @@ def test_component_manifest_document_refs_exist_and_classify_legacy_projection()
     assert all(item["role"] in DOC_ROLES for item in docs)
     assert roles["README.md"] == "component-front-door"
     assert roles["docs/component-roadmap.md"] == "component-owned"
+    assert roles["docs/package-ci.md"] == "component-owned"
     for path in (
         "docs/security-portfolio-roadmap.md",
         "docs/security-portfolio-roadmap-public.yaml",
