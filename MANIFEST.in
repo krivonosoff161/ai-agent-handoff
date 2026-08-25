@@ -1,11 +1,13 @@
 include AGENTS.md
 include CHANGELOG.md
+include .gitattributes
 include component.yaml
 include guard_config.example.json
 include .github/workflows/tests.yml
 recursive-include contracts *.json
 recursive-include docs *.json *.md *.yaml
 recursive-include examples *.md
+recursive-include extensions *.json *.md *.py *.toml
 recursive-include templates *.md
 recursive-include tests *.json *.py
 recursive-include tools *.py

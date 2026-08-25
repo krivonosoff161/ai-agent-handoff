@@ -17,15 +17,18 @@
     "checks": [
       "handoff-pattern-guard",
       "handoff-metadata-integrity",
-      "handoff-sequence-validation"
+      "handoff-sequence-validation",
+      "handoff-observation-validation"
     ],
     "collectors": [],
-    "adapters": ["portfolio-observation-v1"],
+    "adapters": ["portfolio-observation-v1", "harness-extension-v1"],
     "contracts": ["handoff-metadata-v1"]
   },
   "consumes": [
     "Agentic Security Harness component manifest contract",
-    "authority-free portfolio observation v1"
+    "authority-free portfolio observation v1",
+    "Harness Extension SDK API 1",
+    "Harness Distribution Discovery V1"
   ],
   "contracts": [
     {
@@ -45,11 +48,18 @@
       "version": "1",
       "direction": "provides",
       "required": false
+    },
+    {
+      "id": "harness-extension-manifest",
+      "version": "1",
+      "direction": "consumes",
+      "required": false
     }
   ],
   "docs": [
     {"path": "README.md", "role": "component-front-door"},
     {"path": "docs/component-roadmap.md", "role": "component-owned"},
+    {"path": "docs/harness-extension.md", "role": "component-owned"},
     {"path": "docs/package-ci.md", "role": "component-owned"},
     {"path": "docs/project-map.md", "role": "component-owned"},
     {"path": "docs/security-portfolio-roadmap.md", "role": "historical"},
@@ -57,28 +67,31 @@
     {"path": "docs/security-portfolio-roadmap-contract.json", "role": "historical"}
   ],
   "compatibility": {
-    "harness_api": "not-yet-declared",
+    "harness_api": "1",
     "python": ">=3.11",
     "platforms": {
       "supported": ["linux", "windows"],
       "tested": ["linux", "windows"]
     }
   },
-  "integration_status": "contract_only",
+  "integration_status": "extension_candidate",
   "evidence_refs": [
     "tests/test_guard.py",
     "tests/test_handoff_metadata.py",
+    "tests/test_harness_extension_distribution.py",
     "tests/test_protocol_files.py",
     "contracts/handoff-metadata.v1.schema.json",
     "contracts/portfolio-observation.v1.manifest.json",
     ".github/workflows/tests.yml",
+    "tools/harness_extension_contracts.py",
     "tools/package_smoke.py",
     "tools/secret_hygiene.py"
   ],
   "claims": [
     "file-based handoff protocol",
     "deterministic pattern guard for declared paths and commands",
-    "bounded digest-and-sequence metadata sidecar"
+    "bounded digest-and-sequence metadata sidecar",
+    "source-owned optional Harness extension review candidate"
   ],
   "non_claims": [
     "security sandbox",
@@ -86,7 +99,7 @@
     "cryptographic producer authentication",
     "concurrency or ordering coordinator",
     "production policy enforcement",
-    "installable Agentic Security Harness extension today"
+    "published or automatically installed Agentic Security Harness extension"
   ],
   "authority": "none"
 }

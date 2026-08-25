@@ -53,7 +53,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
     assert manifest["component_id"] == "ai-agent-handoff"
     assert manifest["visibility"] == "public"
     assert manifest["kind"] == "check_extension"
-    assert manifest["integration_status"] == "contract_only"
+    assert manifest["integration_status"] == "extension_candidate"
     assert manifest["authority"] == "none"
     assert manifest["package"] == {
         "name": "ai-agent-handoff",
@@ -62,7 +62,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
         "entry_points": ["agent-guard"],
     }
     assert manifest["compatibility"] == {
-        "harness_api": "not-yet-declared",
+        "harness_api": "1",
         "python": ">=3.11",
         "platforms": {
             "supported": ["linux", "windows"],
@@ -70,7 +70,10 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
         },
     }
     assert manifest["owns"]["modules"] == ["M13-handoff-edge"]
-    assert "installable Agentic Security Harness extension today" in manifest["non_claims"]
+    assert (
+        "published or automatically installed Agentic Security Harness extension"
+        in manifest["non_claims"]
+    )
 
 
 def test_component_manifest_document_refs_exist_and_classify_legacy_projection() -> None:
@@ -82,6 +85,7 @@ def test_component_manifest_document_refs_exist_and_classify_legacy_projection()
     assert roles["README.md"] == "component-front-door"
     assert roles["docs/component-roadmap.md"] == "component-owned"
     assert roles["docs/package-ci.md"] == "component-owned"
+    assert roles["docs/harness-extension.md"] == "component-owned"
     for path in (
         "docs/security-portfolio-roadmap.md",
         "docs/security-portfolio-roadmap-public.yaml",
@@ -103,7 +107,7 @@ def test_component_docs_link_the_current_ecosystem_without_promoting_integration
 
     for text in (readme, roadmap, legacy):
         assert "agentic-security-harness/blob/main/docs/ecosystem-roadmap.md" in text
-    assert "contract-only" in readme
-    assert "not yet an installable `ash` extension" in readme
-    assert "`contract_only`" in roadmap
+    assert "extension candidate" in readme
+    assert "not published, automatically" in readme
+    assert "`extension_candidate`" in roadmap
     assert "Historical R4 projection" in legacy

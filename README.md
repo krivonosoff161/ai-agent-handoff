@@ -6,8 +6,10 @@ Its source-owned identity and ordered integration gates are recorded in
 [`component.yaml`](component.yaml) and the
 [component roadmap](docs/component-roadmap.md).
 
-Current ecosystem status is **contract-only**: the package is independently usable, but
-it is not yet an installable `ash` extension. The former
+Current ecosystem status is **extension candidate**: the standalone package remains
+independently usable, and `extensions/harness-v1/` now builds a separately reviewed,
+operator-selected extension wheel for Harness API 1. It is not published, automatically
+installed, or dependency-resolved. The former
 [Security Portfolio module contract](docs/security-portfolio-roadmap.md) is preserved as
 historical, digest-bound R4 evidence.
 
@@ -81,6 +83,9 @@ explicit verification. See [docs/protocol.md](docs/protocol.md).
 - **[Handoff metadata sidecar](docs/handoff-metadata-sidecar.md)** — a strict,
   bounded digest-and-sequence record that projects to the portfolio observation
   contract without publishing the Markdown body or granting authority.
+- **[Optional Harness extension](docs/harness-extension.md)** — a separate source-owned,
+  dependency-free wheel candidate for explicit Distribution Discovery inspection,
+  approval, lifecycle binding, and advisory content-free observation checks.
 - **[examples/](examples/)** — a filled-in `TASK.md` → `SESSION.md` return for a real task.
 - **[docs/protocol.md](docs/protocol.md)** — the loop, the diagram, and why it's cheap.
 
@@ -172,6 +177,8 @@ Config rules worth knowing:
   replay and authority limits for machine-readable handoff observations.
 - [Package and CI contract](docs/package-ci.md) — source/wheel contents and tested
   operating-system/Python matrix.
+- [Optional Harness extension](docs/harness-extension.md) — exact compatibility pins,
+  operator preflight, installed-wheel flow, and non-claims.
 
 ---
 

@@ -13,21 +13,22 @@ The repository currently ships two independently usable surfaces:
 - the dependency-free `agent-guard` pattern guard plus an optional bounded metadata
   sidecar with digest, sequence, parent-link, and authority-free portfolio projection.
 
-Ecosystem integration is currently **`contract_only`**. The package does not yet implement
-the future Harness Extension SDK, does not register checks with `ash`, and must not be
-described as an installable Harness extension today.
+Ecosystem integration is currently **`extension_candidate`**. The standalone package is
+unchanged; the separate `extensions/harness-v1/` source tree builds one operator-selected
+Harness API 1 wheel. The candidate is not published, dependency-resolved, automatically
+discovered, or part of a released Harness package.
 
 ## Ordered delivery gates
 
 1. **Documentation convergence — active.** Keep this roadmap, `component.yaml`, README,
    and offline manifest tests synchronized with the central ecosystem contract.
-2. **Extension contract — planned.** After Harness publishes a stable Extension SDK,
-   expose versioned descriptors for metadata integrity and pattern-guard checks while
-   keeping the file protocol independently usable.
-3. **Installable extension — planned.** Register explicit extension entry points and return
-   the common evidence/result contract without converting advisory output into authority.
-4. **Suite verification — planned.** Add pinned cross-repository compatibility tests on
-   Linux and Windows and publish evidence for the compatibility row.
+2. **Extension contract — review candidate.** A canonical manifest targets Harness API 1
+   and the future published `agentic-security-harness>=1.3,<2` package line.
+3. **Installable extension — review candidate.** The nested dependency-free wheel contains
+   exactly one explicit entry point and returns advisory `ExtensionFindingV1` results.
+4. **Suite verification — implemented for review.** Exact source pins drive synthetic
+   Distribution Discovery, approval, lifecycle binding, and run receipt tests on Linux and
+   Windows. Publication remains a separate gate.
 5. **Protocol deepening — separately reviewed.** Add only bounded protocol or sidecar
    capabilities that preserve the existing non-sandbox and non-authentication boundary.
 
@@ -40,8 +41,9 @@ No later gate is satisfied by documentation alone.
   Windows.
 - Standalone package CI exercises Python 3.9-3.12 on both Linux and Windows, including
   source and wheel builds plus installed `agent-guard` and metadata-contract smoke.
-- Harness API compatibility is `not-yet-declared` until an executable Extension SDK
-  contract and cross-repository test exist.
+- Harness API compatibility is `1` for the optional extension candidate. Its public
+  package boundary is `agentic-security-harness>=1.3,<2`; current CI uses an exact
+  pre-release source candidate and does not claim the 1.3 package exists.
 
 ## Document authority
 
