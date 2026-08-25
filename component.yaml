@@ -1,0 +1,88 @@
+{
+  "schema_version": "AgenticSecurityEcosystemComponent.v1",
+  "component_id": "ai-agent-handoff",
+  "display_name": "AI Agent Handoff",
+  "repository": "https://github.com/krivonosoff161/ai-agent-handoff",
+  "visibility": "public",
+  "kind": "check_extension",
+  "summary": "File-based agent handoff protocol, deterministic pattern guard, and bounded digest-and-sequence metadata sidecar.",
+  "package": {
+    "name": "ai-agent-handoff",
+    "version": "0.2.0",
+    "install": "pip install .",
+    "entry_points": ["agent-guard"]
+  },
+  "owns": {
+    "modules": ["M13-handoff-edge"],
+    "checks": [
+      "handoff-pattern-guard",
+      "handoff-metadata-integrity",
+      "handoff-sequence-validation"
+    ],
+    "collectors": [],
+    "adapters": ["portfolio-observation-v1"],
+    "contracts": ["handoff-metadata-v1"]
+  },
+  "consumes": [
+    "Agentic Security Harness component manifest contract",
+    "authority-free portfolio observation v1"
+  ],
+  "contracts": [
+    {
+      "id": "component-manifest",
+      "version": "1",
+      "direction": "consumes",
+      "required": true
+    },
+    {
+      "id": "portfolio-observation",
+      "version": "1",
+      "direction": "consumes",
+      "required": true
+    },
+    {
+      "id": "handoff-metadata",
+      "version": "1",
+      "direction": "provides",
+      "required": false
+    }
+  ],
+  "docs": [
+    {"path": "README.md", "role": "component-front-door"},
+    {"path": "docs/component-roadmap.md", "role": "component-owned"},
+    {"path": "docs/project-map.md", "role": "component-owned"},
+    {"path": "docs/security-portfolio-roadmap.md", "role": "historical"},
+    {"path": "docs/security-portfolio-roadmap-public.yaml", "role": "historical"},
+    {"path": "docs/security-portfolio-roadmap-contract.json", "role": "historical"}
+  ],
+  "compatibility": {
+    "harness_api": "not-yet-declared",
+    "python": ">=3.11",
+    "platforms": {
+      "supported": ["linux", "windows"],
+      "tested": ["linux"]
+    }
+  },
+  "integration_status": "contract_only",
+  "evidence_refs": [
+    "tests/test_guard.py",
+    "tests/test_handoff_metadata.py",
+    "tests/test_protocol_files.py",
+    "contracts/handoff-metadata.v1.schema.json",
+    "contracts/portfolio-observation.v1.manifest.json"
+  ],
+  "claims": [
+    "file-based handoff protocol",
+    "deterministic pattern guard for declared paths and commands",
+    "bounded digest-and-sequence metadata sidecar"
+  ],
+  "non_claims": [
+    "security sandbox",
+    "semantic verifier",
+    "cryptographic producer authentication",
+    "concurrency or ordering coordinator",
+    "production policy enforcement",
+    "installable Agentic Security Harness extension today"
+  ],
+  "authority": "none"
+}
