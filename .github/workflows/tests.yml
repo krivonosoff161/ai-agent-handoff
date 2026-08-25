@@ -37,13 +37,36 @@ jobs:
           python -m pytest -q -p no:cacheprovider tests/test_ecosystem_component_contract.py tests/test_security_portfolio_roadmap_contract.py tests/test_handoff_metadata.py
 
   package-contract:
-    name: package-contract (${{ matrix.os }}, py${{ matrix.python-version }})
+    name: ${{ matrix.check-name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        include:
+          - os: ubuntu-latest
+            python-version: "3.9"
+            check-name: test (3.9)
+          - os: ubuntu-latest
+            python-version: "3.10"
+            check-name: package-contract (ubuntu-latest, py3.10)
+          - os: ubuntu-latest
+            python-version: "3.11"
+            check-name: test (3.11)
+          - os: ubuntu-latest
+            python-version: "3.12"
+            check-name: test (3.12)
+          - os: windows-latest
+            python-version: "3.9"
+            check-name: package-contract (windows-latest, py3.9)
+          - os: windows-latest
+            python-version: "3.10"
+            check-name: package-contract (windows-latest, py3.10)
+          - os: windows-latest
+            python-version: "3.11"
+            check-name: package-contract (windows-latest, py3.11)
+          - os: windows-latest
+            python-version: "3.12"
+            check-name: package-contract (windows-latest, py3.12)
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
