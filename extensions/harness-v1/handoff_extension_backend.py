@@ -39,7 +39,7 @@ def _configuration_bytes() -> bytes:
         "handoff_distribution": "ai-agent-handoff",
         "handoff_runtime_bindings": {
             "agent_guard/__init__.py": (
-                "5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6"
+                "fd69e20ed288685e4ef4b6e00e86af42d61d4b2d0075307677646223e05a39a1"
             ),
             "agent_guard/guard.py": (
                 "80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932"
@@ -49,8 +49,8 @@ def _configuration_bytes() -> bytes:
             ),
         },
         "handoff_runtime_byte_semantics": "utf8_canonical_lf",
-        "handoff_runtime_version": "0.2.0",
-        "handoff_version_specifier": ">=0.2,<1",
+        "handoff_runtime_version": "0.3.0",
+        "handoff_version_specifier": ">=0.3,<1",
         "harness_distribution": "agentic-security-harness",
         "harness_version_specifier": ">=1.3,<2",
         "network_mode": "off",

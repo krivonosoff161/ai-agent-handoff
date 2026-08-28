@@ -6,10 +6,21 @@ Status: source-owned review candidate; not released or automatically installed.
 `>=1.3,<2` package line. It leaves the standalone `ai-agent-handoff` package and its
 Python 3.9+ guard unchanged. The optional extension requires Python `>=3.11,<3.14`.
 
+Build and install the coordinated source pair explicitly:
+
+```text
+python -m build --outdir dist/core .
+python -m build --outdir dist/extension extensions/harness-v1
+python -m pip install --no-deps dist/core/ai_agent_handoff-0.3.0-py3-none-any.whl dist/extension/ai_agent_handoff_harness_extension-1.0.0-py3-none-any.whl
+```
+
+After separately approved publication, a Harness `handoff` extra may select these same
+exact distributions. The extension itself intentionally performs no dependency resolution.
+
 ## Controlled operator sequence
 
-1. Install and verify `ai-agent-handoff>=0.2,<1` and a compatible Harness environment.
-   This V1 factory additionally requires exact Handoff 0.2.0 canonical-LF runtime bytes
+1. Install and verify `ai-agent-handoff>=0.3,<1` and a compatible Harness environment.
+   This V1 factory additionally requires exact Handoff 0.3.0 canonical-LF runtime bytes
    whose three digests are public in `ash-extension-config.json`. CRLF and LF source
    materializations have the same declared text commitment; a bare CR is rejected.
 2. Build the nested wheel locally. It declares no `Requires-Dist`, because Harness
@@ -28,11 +39,11 @@ Python 3.9+ guard unchanged. The optional extension requires Python `>=3.11,<3.1
    existing Extension SDK pipeline.
 
 The configuration records `agentic-security-harness>=1.3,<2` and
-`ai-agent-handoff>=0.2,<1` as operator-preflight requirements. Wheel metadata does not
+`ai-agent-handoff>=0.3,<1` as operator-preflight requirements. Wheel metadata does not
 enforce or resolve those dependencies. The current cross-repository test uses exact
-pre-release Harness source HEAD `285d05ad64239dd55271e5c534041b235db0e243` and its
-closed file digests as forward-compatibility evidence; it is not evidence that a 1.3
-package has been published.
+released Harness source HEAD `c1dd69856212458ae952e43aeb2b0cc9290e8205` and its
+closed file digests as compatibility evidence; it does not make the extension itself a
+published package.
 
 ## Data and authority boundary
 

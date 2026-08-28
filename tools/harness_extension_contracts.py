@@ -12,14 +12,14 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 EXTENSION_ROOT = ROOT / "extensions" / "harness-v1"
 OUTPUT = ROOT / "contracts" / "harness-extension-v1.manifest.json"
-HARNESS_HEAD = "285d05ad64239dd55271e5c534041b235db0e243"
-HARNESS_TREE = "8b9cdcd7bba6eb8d6c584872865463a987a56752"
+HARNESS_HEAD = "c1dd69856212458ae952e43aeb2b0cc9290e8205"
+HARNESS_TREE = "596c189e8b15ceaf7bf28337546655e23d47d3ef"
 HARNESS_BINDINGS = {
     "src/agentic_security_harness/__init__.py": (
-        "ed61b0326d0bec05915907b3c3405d568525995a3a3095d396e12b4f11c67b15"
+        "eb7aa2e995bcdc8381d6598a0c6900514ec09c46b1da19b450c7aeb0f75800f5"
     ),
     "src/agentic_security_harness/extension_distribution.py": (
-        "51a75618b2ea6c9d696be9e7a4f59766e1918be011c0058fcf21d9a3bc005802"
+        "e8bf5c2792e271c7363a7b51ce4f0450472649d1216099aea79a19915339a6e6"
     ),
     "src/agentic_security_harness/extension_lifecycle.py": (
         "22b0a23599ee3b48cb1d36f63f38ff1da0366cf79aa70403e02e7c487d7f9b59"
@@ -44,6 +44,7 @@ LOCAL_BINDINGS = {
     "package_smoke": "tools/package_smoke.py",
     "source_manifest": "MANIFEST.in",
     "tests": "tests/test_harness_extension_distribution.py",
+    "test_bootstrap": "tests/conftest.py",
     "workflow": ".github/workflows/tests.yml",
 }
 
@@ -79,7 +80,7 @@ def generated_manifest() -> bytes:
         "authority": "none",
         "dependency_boundary": {
             "harness": "agentic-security-harness>=1.3,<2",
-            "handoff": "ai-agent-handoff>=0.2,<1",
+            "handoff": "ai-agent-handoff>=0.3,<1",
             "resolver_enforced": False,
             "semantics": "operator_preflight_only",
         },
@@ -87,8 +88,8 @@ def generated_manifest() -> bytes:
         "extension_manifest_sha256": hashlib.sha256(extension_manifest).hexdigest(),
         "extension_version": "1.0.0",
         "handoff_source": {
-            "base_head": "874bbb51a752b03477b2b1605cecea31ea912112",
-            "base_tree": "5337b188e7d7d1111537060618c7073057ebd6ad",
+            "base_head": "f4e51e0603497f63c62453fc4030319fdfc5ac04",
+            "base_tree": "78311595f72469748469a1dfd4dc4a286244159f",
         },
         "harness_api": "1",
         "harness_reference": {

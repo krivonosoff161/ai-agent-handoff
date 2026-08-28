@@ -118,6 +118,12 @@ and reviewer documentation are included in the source distribution and repositor
 builds and inspects both artifacts on Linux and Windows across Python 3.9-3.12; see the
 [package and CI contract](docs/package-ci.md).
 
+The coordinated source candidates are `ai-agent-handoff==0.3.0` and
+`ai-agent-handoff-harness-extension==1.0.0`. The nested extension remains dependency-free
+and operator-selected. Neither candidate is currently claimed as published; future
+`pip install agentic-security-harness[handoff]` support depends on exact-artifact
+publication and a separate Harness compatibility update.
+
 ```python
 from agent_guard import decide
 

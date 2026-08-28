@@ -57,7 +57,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
     assert manifest["authority"] == "none"
     assert manifest["package"] == {
         "name": "ai-agent-handoff",
-        "version": "0.2.0",
+        "version": "0.3.0",
         "install": "pip install .",
         "entry_points": ["agent-guard"],
     }

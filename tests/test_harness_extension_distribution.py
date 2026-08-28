@@ -169,7 +169,7 @@ def test_nested_project_declares_closed_noninstalling_dependency_boundary() -> N
     boundary = project["tool"]["ai-agent-handoff"]["harness-extension"]
     assert boundary == {
         "required-harness": "agentic-security-harness>=1.3,<2",
-        "required-handoff": "ai-agent-handoff>=0.2,<1",
+        "required-handoff": "ai-agent-handoff>=0.3,<1",
         "dependency-resolution": "operator-preflight-only",
     }
     configuration = (EXTENSION_ROOT / "ash-extension-config.json").read_bytes()
@@ -178,11 +178,12 @@ def test_nested_project_declares_closed_noninstalling_dependency_boundary() -> N
         json.loads(configuration), separators=(",", ":"), sort_keys=True
     ).encode() + b"\n" == configuration
     decoded = json.loads(configuration)
-    assert decoded["handoff_runtime_version"] == "0.2.0"
+    assert decoded["handoff_runtime_version"] == "0.3.0"
+    assert decoded["handoff_version_specifier"] == ">=0.3,<1"
     assert decoded["handoff_runtime_byte_semantics"] == "utf8_canonical_lf"
     assert decoded["handoff_runtime_bindings"] == {
         "agent_guard/__init__.py": (
-            "5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6"
+            "fd69e20ed288685e4ef4b6e00e86af42d61d4b2d0075307677646223e05a39a1"
         ),
         "agent_guard/guard.py": (
             "80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932"
@@ -202,6 +203,7 @@ def test_nested_project_declares_closed_noninstalling_dependency_boundary() -> N
         "component.yaml text eol=lf",
         "MANIFEST.in text eol=lf",
         "tools/package_smoke.py text eol=lf",
+        "tests/conftest.py text eol=lf",
     } <= attributes
 
 
