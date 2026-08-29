@@ -191,22 +191,26 @@ def build_wheel(
 def build_sdist(
     sdist_directory: str, config_settings: dict[str, Any] | None = None
 ) -> str:
-    source_paths = (
-        Path("README.md"),
-        Path("ash-extension-config.json"),
-        Path("handoff_extension_backend.py"),
-        Path("pyproject.toml"),
-        Path("src") / f"{MODULE}.py",
-    )
+    source_files = {
+        "PKG-INFO": _metadata(),
+        "README.md": (ROOT / "README.md").read_bytes(),
+        "ash-extension-config.json": (ROOT / "ash-extension-config.json").read_bytes(),
+        "handoff_extension_backend.py": (ROOT / "handoff_extension_backend.py").read_bytes(),
+        "pyproject.toml": (ROOT / "pyproject.toml").read_bytes(),
+        f"src/{MODULE}.py": SOURCE.read_bytes(),
+    }
     root_name = f"{NORMALIZED_NAME}-{VERSION}"
     raw_tar = io.BytesIO()
     with tarfile.open(fileobj=raw_tar, mode="w") as archive:
-        for relative in source_paths:
-            payload = (ROOT / relative).read_bytes()
-            info = tarfile.TarInfo(f"{root_name}/{relative.as_posix()}")
+        for relative, payload in sorted(source_files.items()):
+            info = tarfile.TarInfo(f"{root_name}/{relative}")
             info.size = len(payload)
             info.mode = 0o644
             info.mtime = 0
+            info.uid = 0
+            info.gid = 0
+            info.uname = ""
+            info.gname = ""
             archive.addfile(info, io.BytesIO(payload))
     filename = f"{root_name}.tar.gz"
     destination = Path(sdist_directory) / filename

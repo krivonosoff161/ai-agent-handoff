@@ -16,3 +16,6 @@ component.yaml text eol=lf
 MANIFEST.in text eol=lf
 tools/package_smoke.py text eol=lf
 tests/conftest.py text eol=lf
+.github/workflows/*.yml text eol=lf
+tools/normalize_sdist.py text eol=lf
+tools/verify_release_index.py text eol=lf
