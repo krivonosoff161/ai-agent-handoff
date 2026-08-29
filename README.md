@@ -8,8 +8,9 @@ Its source-owned identity and ordered integration gates are recorded in
 
 Current ecosystem status is **extension candidate**: the standalone package remains
 independently usable, and `extensions/harness-v1/` now builds a separately reviewed,
-operator-selected extension wheel for Harness API 1. It is not published, automatically
-installed, or dependency-resolved. The former
+operator-selected extension wheel for Harness API 1. It is not automatically
+approved, discovered, or bound. Both distributions are published on PyPI and are
+dependency-resolved by the Harness `handoff` extra. The former
 [Security Portfolio module contract](docs/security-portfolio-roadmap.md) is preserved as
 historical, digest-bound R4 evidence.
 
@@ -108,7 +109,7 @@ Tell agent A: *"write the next task into `TASK.md`"*; tell agent B: *"do `TASK.m
 ## The safety guard
 
 ```bash
-pip install .             # provides the `agent-guard` command + the agent_guard package
+python -m pip install ai-agent-handoff==0.3.0  # provides `agent-guard`
 python -m pytest -q       # offline test suite, no network
 ```
 
@@ -118,13 +119,15 @@ and reviewer documentation are included in the source distribution and repositor
 builds and inspects both artifacts on Linux and Windows across Python 3.9-3.12; see the
 [package and CI contract](docs/package-ci.md).
 
-The coordinated source candidates are `ai-agent-handoff==0.3.0` and
+The coordinated public distributions are `ai-agent-handoff==0.3.0` and
 `ai-agent-handoff-harness-extension==1.0.0`. The nested extension remains dependency-free
-and operator-selected. Harness `main` declares a source-only `handoff` extra for this
-exact pair, but neither candidate is published and the published Harness `v1.3.0`
-metadata does not contain that extra. Public
-`pip install agentic-security-harness[handoff]` support therefore remains unavailable;
-exact companion publication and newer Harness package metadata are separate release gates.
+and operator-selected. Published Harness `v1.4.0` resolves this exact pair from PyPI:
+
+```bash
+python -m pip install "agentic-security-harness[handoff]==1.4.0"
+```
+
+Installation alone does not approve, discover, bind, or run the extension.
 
 ```python
 from agent_guard import decide

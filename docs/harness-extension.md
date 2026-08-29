@@ -1,12 +1,12 @@
 # Optional Harness extension distribution
 
-Status: source-owned review candidate; not released or automatically installed.
+Status: published, source-owned extension candidate; never automatically approved or bound.
 
-`extensions/harness-v1/` is a separate six-file wheel surface for the future Harness
+`extensions/harness-v1/` is a separate six-file wheel surface for the Harness
 `>=1.3,<2` package line. It leaves the standalone `ai-agent-handoff` package and its
 Python 3.9+ guard unchanged. The optional extension requires Python `>=3.11,<3.14`.
 
-Build and install the coordinated source pair explicitly:
+For source review, build and install the coordinated pair explicitly:
 
 ```text
 python -m build --outdir dist/core .
@@ -14,10 +14,9 @@ python -m build --outdir dist/extension extensions/harness-v1
 python -m pip install --no-deps dist/core/ai_agent_handoff-0.3.0-py3-none-any.whl dist/extension/ai_agent_handoff_harness_extension-1.0.0-py3-none-any.whl
 ```
 
-Harness `main` already declares a source-only `handoff` extra selecting these same exact
-distributions. Neither companion artifact is published and published Harness `v1.3.0`
-metadata does not contain that extra, so the public extra command is unavailable. The
-extension itself intentionally performs no dependency resolution.
+Published Harness `v1.4.0` declares a `handoff` extra selecting these same exact public
+distributions. The extension itself intentionally performs no dependency resolution;
+installation alone does not approve, discover, bind, or run it.
 
 ## Controlled operator sequence
 
@@ -25,7 +24,7 @@ extension itself intentionally performs no dependency resolution.
    This V1 factory additionally requires exact Handoff 0.3.0 canonical-LF runtime bytes
    whose three digests are public in `ash-extension-config.json`. CRLF and LF source
    materializations have the same declared text commitment; a bare CR is rejected.
-2. Build the nested wheel locally. It declares no `Requires-Dist`, because Harness
+2. Obtain the published nested wheel or build it locally for source review. It declares no `Requires-Dist`, because Harness
    Distribution Discovery V1 rejects dependency-bearing extension wheels.
 3. Install it into a dedicated inspection root with
    `python -m pip install --no-index --no-deps --no-compile --target <root> <wheel>`.
