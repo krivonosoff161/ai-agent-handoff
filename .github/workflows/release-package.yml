@@ -259,12 +259,16 @@ jobs:
               --predicate-type "https://slsa.dev/provenance/v1" \
               --deny-self-hosted-runners
           done
+          mkdir publish-dist
+          cp \
+            dist/ai_agent_handoff-0.3.0-py3-none-any.whl \
+            dist/ai_agent_handoff-0.3.0.tar.gz \
+            publish-dist/
+          python tools/verify_release_index.py --dist-dir publish-dist --expected ai-agent-handoff==0.3.0
           if test "${{ inputs.target }}" = "pypi"; then
-            python tools/verify_release_index.py --dist-dir dist --expected ai-agent-handoff==0.3.0 --expected ai-agent-handoff-harness-extension==1.0.0 \
+            python tools/verify_release_index.py --dist-dir publish-dist --expected ai-agent-handoff==0.3.0 \
               --host test.pypi.org --attempts 3 --wait-seconds 10
           fi
-          mkdir publish-dist
-          cp dist/*.tar.gz dist/*.whl publish-dist/
       - name: Publish to TestPyPI with OIDC
         if: inputs.target == 'testpypi'
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
@@ -282,7 +286,7 @@ jobs:
         env:
           TARGET_HOST: ${{ inputs.target == 'testpypi' && 'test.pypi.org' || 'pypi.org' }}
         run: |
-          python tools/verify_release_index.py --dist-dir dist --expected ai-agent-handoff==0.3.0 --expected ai-agent-handoff-harness-extension==1.0.0 \
+          python tools/verify_release_index.py --dist-dir publish-dist --expected ai-agent-handoff==0.3.0 \
             --host "$TARGET_HOST" --attempts 8 --wait-seconds 15
 
   smoke:
@@ -304,13 +308,13 @@ jobs:
         shell: bash
         env:
           INDEX_URL: ${{ inputs.target == 'testpypi' && 'https://test.pypi.org/simple/' || 'https://pypi.org/simple/' }}
-          EXPECTED_PACKAGES: '{"ai-agent-handoff":"0.3.0","ai-agent-handoff-harness-extension":"1.0.0"}'
+          EXPECTED_PACKAGES: '{"ai-agent-handoff":"0.3.0"}'
         run: |
           set -euo pipefail
           python -m pip install --no-cache-dir \
             --index-url "$INDEX_URL" \
             --extra-index-url https://pypi.org/simple/ \
-            "ai-agent-handoff==0.3.0" "ai-agent-handoff-harness-extension==1.0.0"
+            "ai-agent-handoff==0.3.0"
           python - <<'PY'
           import importlib.metadata as metadata
           import json
@@ -323,7 +327,5 @@ jobs:
           import importlib.metadata as metadata
           import agent_guard
           assert agent_guard.__version__ == "0.3.0"
-          points = metadata.entry_points(group="agentic_security_harness.extensions.v1")
-          assert {point.name for point in points} == {"ai-agent-handoff.validation"}
           PY
           agent-guard --help
