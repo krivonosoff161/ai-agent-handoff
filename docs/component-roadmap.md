@@ -15,19 +15,20 @@ The repository currently ships two independently usable surfaces:
 
 Ecosystem integration is currently **`extension_candidate`**. The standalone package is
 unchanged; the separate `extensions/harness-v1/` source tree builds one operator-selected
-Harness API 1 wheel. The candidate is not published, dependency-resolved, automatically
-discovered, or part of a released Harness package.
+Harness API 1 wheel. The candidate is not published, dependency-resolved, or automatically
+discovered. Harness `main` declares its source-only dependency row, but published Harness
+`v1.3.0` metadata does not contain that row.
 
 The coordinated source candidates are `ai-agent-handoff==0.3.0` and
 `ai-agent-handoff-harness-extension==1.0.0`. CI builds both exact artifact sets; public
-index publication and the Harness optional-dependency row remain separate release gates.
+index publication and newer published Harness package metadata remain separate release gates.
 
 ## Ordered delivery gates
 
 1. **Documentation convergence — active.** Keep this roadmap, `component.yaml`, README,
    and offline manifest tests synchronized with the central ecosystem contract.
 2. **Extension contract — review candidate.** A canonical manifest targets Harness API 1
-   and the future published `agentic-security-harness>=1.3,<2` package line.
+   and the source `agentic-security-harness>=1.3,<2` package line.
 3. **Installable extension — review candidate.** The nested dependency-free wheel contains
    exactly one explicit entry point and returns advisory `ExtensionFindingV1` results.
 4. **Suite verification — implemented for review.** Exact source pins drive synthetic

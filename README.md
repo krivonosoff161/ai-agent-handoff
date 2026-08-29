@@ -120,9 +120,11 @@ builds and inspects both artifacts on Linux and Windows across Python 3.9-3.12; 
 
 The coordinated source candidates are `ai-agent-handoff==0.3.0` and
 `ai-agent-handoff-harness-extension==1.0.0`. The nested extension remains dependency-free
-and operator-selected. Neither candidate is currently claimed as published; future
-`pip install agentic-security-harness[handoff]` support depends on exact-artifact
-publication and a separate Harness compatibility update.
+and operator-selected. Harness `main` declares a source-only `handoff` extra for this
+exact pair, but neither candidate is published and the published Harness `v1.3.0`
+metadata does not contain that extra. Public
+`pip install agentic-security-harness[handoff]` support therefore remains unavailable;
+exact companion publication and newer Harness package metadata are separate release gates.
 
 ```python
 from agent_guard import decide

@@ -111,3 +111,16 @@ def test_component_docs_link_the_current_ecosystem_without_promoting_integration
     assert "not published, automatically" in readme
     assert "`extension_candidate`" in roadmap
     assert "Historical R4 projection" in legacy
+
+
+def test_install_docs_distinguish_source_extra_from_public_packages() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    extension = (ROOT / "docs" / "harness-extension.md").read_text(encoding="utf-8")
+
+    for text in (readme, extension):
+        normalized = " ".join(text.split())
+        assert "Harness `main`" in normalized
+        assert "published Harness `v1.3.0` metadata does not contain" in normalized
+    assert "Public\n`pip install agentic-security-harness[handoff]` support" in readme
+    assert "public extra command is unavailable" in extension
+    assert "released or automatically installed" in " ".join(extension.split())
