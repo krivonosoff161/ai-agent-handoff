@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+import tarfile
 import types
 import zipfile
 from datetime import datetime, timezone
@@ -68,6 +69,27 @@ def _build_wheel(tmp_path: Path) -> Path:
     wheels = tuple(output.glob("*.whl"))
     assert len(wheels) == 1
     return wheels[0]
+
+
+def _build_sdist(tmp_path: Path) -> Path:
+    output = tmp_path / "sdist"
+    subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "build",
+            "--sdist",
+            "--outdir",
+            str(output),
+            str(EXTENSION_ROOT),
+        ],
+        check=True,
+        cwd=ROOT,
+        timeout=120,
+    )
+    sdists = tuple(output.glob("*.tar.gz"))
+    assert len(sdists) == 1
+    return sdists[0]
 
 
 def _build_handoff_wheel(tmp_path: Path) -> Path:
@@ -205,6 +227,23 @@ def test_nested_project_declares_closed_noninstalling_dependency_boundary() -> N
         "tools/package_smoke.py text eol=lf",
         "tests/conftest.py text eol=lf",
     } <= attributes
+
+
+def test_sdist_includes_exact_core_metadata(tmp_path: Path) -> None:
+    with tarfile.open(_build_sdist(tmp_path), mode="r:gz") as archive:
+        pkg_info_members = tuple(
+            member
+            for member in archive.getmembers()
+            if PurePosixPath(member.name).name == "PKG-INFO"
+        )
+        assert len(pkg_info_members) == 1
+        extracted = archive.extractfile(pkg_info_members[0])
+        assert extracted is not None
+        pkg_info = extracted.read().decode("utf-8")
+    assert "Metadata-Version: 2.4\n" in pkg_info
+    assert f"Name: {DIST_NAME}\n" in pkg_info
+    assert "Version: 1.0.0\n" in pkg_info
+    assert "Requires-Python: >=3.11,<3.14\n" in pkg_info
 
 
 @pytest.mark.skipif(sys.version_info < (3, 11), reason="Harness extension requires Python 3.11")
