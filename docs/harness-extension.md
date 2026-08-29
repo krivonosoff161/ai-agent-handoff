@@ -14,8 +14,10 @@ python -m build --outdir dist/extension extensions/harness-v1
 python -m pip install --no-deps dist/core/ai_agent_handoff-0.3.0-py3-none-any.whl dist/extension/ai_agent_handoff_harness_extension-1.0.0-py3-none-any.whl
 ```
 
-After separately approved publication, a Harness `handoff` extra may select these same
-exact distributions. The extension itself intentionally performs no dependency resolution.
+Harness `main` already declares a source-only `handoff` extra selecting these same exact
+distributions. Neither companion artifact is published and published Harness `v1.3.0`
+metadata does not contain that extra, so the public extra command is unavailable. The
+extension itself intentionally performs no dependency resolution.
 
 ## Controlled operator sequence
 
