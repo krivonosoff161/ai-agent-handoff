@@ -1,6 +1,16 @@
 # Changelog
 
-## 0.2.0 — unreleased
+## 0.3.0 — unreleased
+
+### Changed
+- Prepared coordinated `ai-agent-handoff==0.3.0` and
+  `ai-agent-handoff-harness-extension==1.0.0` source distribution candidates.
+- Retargeted the optional extension compatibility evidence to exact released Harness
+  source SHA `c1dd69856212458ae952e43aeb2b0cc9290e8205`.
+- Kept extension discovery, dependency resolution, publication, and activation behind
+  explicit operator and release gates.
+
+## 0.2.0
 
 ### Docs
 - Added first-screen positioning for `ai-agent-handoff` as the handoff/protocol

@@ -8,7 +8,7 @@
   "summary": "File-based agent handoff protocol, deterministic pattern guard, and bounded digest-and-sequence metadata sidecar.",
   "package": {
     "name": "ai-agent-handoff",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "install": "pip install .",
     "entry_points": ["agent-guard"]
   },
@@ -91,7 +91,8 @@
     "file-based handoff protocol",
     "deterministic pattern guard for declared paths and commands",
     "bounded digest-and-sequence metadata sidecar",
-    "source-owned optional Harness extension review candidate"
+    "source-owned optional Harness extension review candidate",
+    "source-buildable coordinated base and extension distribution candidates"
   ],
   "non_claims": [
     "security sandbox",

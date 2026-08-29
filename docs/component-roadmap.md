@@ -18,6 +18,10 @@ unchanged; the separate `extensions/harness-v1/` source tree builds one operator
 Harness API 1 wheel. The candidate is not published, dependency-resolved, automatically
 discovered, or part of a released Harness package.
 
+The coordinated source candidates are `ai-agent-handoff==0.3.0` and
+`ai-agent-handoff-harness-extension==1.0.0`. CI builds both exact artifact sets; public
+index publication and the Harness optional-dependency row remain separate release gates.
+
 ## Ordered delivery gates
 
 1. **Documentation convergence — active.** Keep this roadmap, `component.yaml`, README,
@@ -42,8 +46,8 @@ No later gate is satisfied by documentation alone.
 - Standalone package CI exercises Python 3.9-3.12 on both Linux and Windows, including
   source and wheel builds plus installed `agent-guard` and metadata-contract smoke.
 - Harness API compatibility is `1` for the optional extension candidate. Its public
-  package boundary is `agentic-security-harness>=1.3,<2`; current CI uses an exact
-  pre-release source candidate and does not claim the 1.3 package exists.
+  package boundary is `agentic-security-harness>=1.3,<2`; current CI uses exact released
+  Harness source SHA `c1dd69856212458ae952e43aeb2b0cc9290e8205` as compatibility evidence.
 
 ## Document authority
 

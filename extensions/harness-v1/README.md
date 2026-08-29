@@ -4,13 +4,13 @@ This nested source distribution builds one dependency-free extension wheel for e
 inspection and approval by Agentic Security Harness Distribution Discovery V1.
 
 The wheel deliberately has no `Requires-Dist`. Discovery V1 rejects dependency-bearing
-extensions, so the operator must install and verify `ai-agent-handoff>=0.2,<1` and the
+extensions, so the operator must install and verify `ai-agent-handoff>=0.3,<1` and the
 future published `agentic-security-harness>=1.3,<2` environment separately. The exact
 pre-1.3 Harness source candidate used by this repository's compatibility CI is pinned in
 `contracts/harness-extension-v1.manifest.json`; it is test evidence, not a released
 package-version claim.
 
-The V1 factory is narrower than the compatibility range: it accepts only Handoff 0.2.0
+The V1 factory is narrower than the compatibility range: it accepts only Handoff 0.3.0
 with the three exact canonical-LF public runtime-file digests recorded in
 `ash-extension-config.json`. LF and CRLF source materializations commit to the same text;
 bare CR bytes are rejected.

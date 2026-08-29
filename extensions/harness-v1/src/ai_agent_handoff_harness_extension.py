@@ -29,22 +29,22 @@ CANONICAL_CONFIGURATION_BYTES = (
     b'{"dependency_resolution":"operator_preflight_only",'
     b'"handoff_distribution":"ai-agent-handoff",'
     b'"handoff_runtime_bindings":{'
-    b'"agent_guard/__init__.py":"5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6",'
+    b'"agent_guard/__init__.py":"fd69e20ed288685e4ef4b6e00e86af42d61d4b2d0075307677646223e05a39a1",'
     b'"agent_guard/guard.py":"80d4707b96319778ef8f8b18bf10cdac97c399c4ddb0157d57825ef0397b0932",'
     b'"agent_guard/handoff_metadata.py":"471bbed70ddb483d04be47cc7de8c8eb7024fc112fac39ab2248ddc94366cc25"},'
     b'"handoff_runtime_byte_semantics":"utf8_canonical_lf",'
-    b'"handoff_runtime_version":"0.2.0",'
-    b'"handoff_version_specifier":">=0.2,<1",'
+    b'"handoff_runtime_version":"0.3.0",'
+    b'"handoff_version_specifier":">=0.3,<1",'
     b'"harness_distribution":"agentic-security-harness",'
     b'"harness_version_specifier":">=1.3,<2",'
     b'"network_mode":"off","operational_authority":"none",'
     b'"schema_version":"ai-agent-handoff-harness-extension-config-v1.0"}\n'
 )
-HANDOFF_RUNTIME_VERSION = "0.2.0"
+HANDOFF_RUNTIME_VERSION = "0.3.0"
 HANDOFF_RUNTIME_BINDINGS = (
     (
         "agent_guard/__init__.py",
-        "5fbf61ca298966c08c2620029b844f7d4cf85c644eb87d7da279234020ca62f6",
+        "fd69e20ed288685e4ef4b6e00e86af42d61d4b2d0075307677646223e05a39a1",
     ),
     (
         "agent_guard/guard.py",

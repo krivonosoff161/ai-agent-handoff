@@ -83,7 +83,7 @@ jobs:
       - name: Build source and wheel distributions
         run: python -m build --sdist --wheel
       - name: Isolated installed-wheel API and agent-guard smoke
-        run: python tools/package_smoke.py --dist-dir dist --expected-version 0.2.0
+        run: python tools/package_smoke.py --dist-dir dist --expected-version 0.3.0
 
   harness-extension-contract:
     name: harness-extension (${{ matrix.os }}, py${{ matrix.python-version }})
@@ -102,7 +102,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: krivonosoff161/agentic-security-harness
-          ref: 285d05ad64239dd55271e5c534041b235db0e243
+          ref: c1dd69856212458ae952e43aeb2b0cc9290e8205
           path: components/harness
           persist-credentials: false
       - name: Set up Python ${{ matrix.python-version }}

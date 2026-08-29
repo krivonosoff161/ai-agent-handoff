@@ -15,3 +15,4 @@ tests/test_harness_extension_distribution.py text eol=lf
 component.yaml text eol=lf
 MANIFEST.in text eol=lf
 tools/package_smoke.py text eol=lf
+tests/conftest.py text eol=lf
