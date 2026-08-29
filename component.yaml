@@ -9,7 +9,7 @@
   "package": {
     "name": "ai-agent-handoff",
     "version": "0.3.0",
-    "install": "pip install .",
+    "install": "pip install ai-agent-handoff==0.3.0",
     "entry_points": ["agent-guard"]
   },
   "owns": {
@@ -92,7 +92,7 @@
     "deterministic pattern guard for declared paths and commands",
     "bounded digest-and-sequence metadata sidecar",
     "source-owned optional Harness extension review candidate",
-    "source-buildable coordinated base and extension distribution candidates"
+    "published coordinated base and extension distributions"
   ],
   "non_claims": [
     "security sandbox",
@@ -100,7 +100,7 @@
     "cryptographic producer authentication",
     "concurrency or ordering coordinator",
     "production policy enforcement",
-    "published or automatically installed Agentic Security Harness extension"
+    "automatically approved, discovered, bound, or activated Agentic Security Harness extension"
   ],
   "authority": "none"
 }

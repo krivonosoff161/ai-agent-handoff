@@ -58,7 +58,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
     assert manifest["package"] == {
         "name": "ai-agent-handoff",
         "version": "0.3.0",
-        "install": "pip install .",
+        "install": "pip install ai-agent-handoff==0.3.0",
         "entry_points": ["agent-guard"],
     }
     assert manifest["compatibility"] == {
@@ -71,7 +71,7 @@ def test_component_manifest_matches_central_v1_shape_and_local_boundary() -> Non
     }
     assert manifest["owns"]["modules"] == ["M13-handoff-edge"]
     assert (
-        "published or automatically installed Agentic Security Harness extension"
+        "automatically approved, discovered, bound, or activated Agentic Security Harness extension"
         in manifest["non_claims"]
     )
 
@@ -108,19 +108,19 @@ def test_component_docs_link_the_current_ecosystem_without_promoting_integration
     for text in (readme, roadmap, legacy):
         assert "agentic-security-harness/blob/main/docs/ecosystem-roadmap.md" in text
     assert "extension candidate" in readme
-    assert "not published, automatically" in readme
+    assert "not automatically\napproved, discovered, or bound" in readme
     assert "`extension_candidate`" in roadmap
     assert "Historical R4 projection" in legacy
 
 
-def test_install_docs_distinguish_source_extra_from_public_packages() -> None:
+def test_install_docs_bind_public_packages_and_passive_extra() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     extension = (ROOT / "docs" / "harness-extension.md").read_text(encoding="utf-8")
 
     for text in (readme, extension):
         normalized = " ".join(text.split())
-        assert "Harness `main`" in normalized
-        assert "published Harness `v1.3.0` metadata does not contain" in normalized
-    assert "Public\n`pip install agentic-security-harness[handoff]` support" in readme
-    assert "public extra command is unavailable" in extension
-    assert "released or automatically installed" in " ".join(extension.split())
+        assert "Harness `v1.4.0`" in normalized
+        assert "public distributions" in normalized
+    assert "agentic-security-harness[handoff]==1.4.0" in readme
+    assert "ai-agent-handoff==0.3.0" in readme
+    assert "never automatically approved or bound" in " ".join(extension.split())
